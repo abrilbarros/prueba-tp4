@@ -1,0 +1,81 @@
+/* ===== Base ===== */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", Arial, sans-serif;
+}
+
+/* ===== Navbar / logos ===== */
+.logo-marca {
+    width: 48px;
+    height: 48px;
+}
+
+.logo-servicios {
+    width: 84px;
+    height: 84px;
+}
+
+.icono-20 {
+    width: 20px;
+    height: 20px;
+}
+
+/* ===== Hero ===== */
+.superposicion-hero {
+    z-index: 5;
+}
+
+.panel-hero {
+    max-width: 640px;
+}
+
+/*===== Staff ===== */
+#filtroEspecialidad {
+    min-width: 220px;
+}
+
+.card-img-top {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+}
+
+/* ===== Servicios ===== */
+.separador-angosto {
+    max-width: 92%;
+}
+
+.lista-servicios {
+    max-width: 720px;
+}
+
+/* ===== Por qué elegirnos ===== */
+.intro-por-que {
+    max-width: 920px;
+}
+
+/* ===== Carrusel (desktop) ===== */
+@media (min-width: 992px) {
+    #carruselVita .carousel-item {
+        height: min(70vh, 520px);
+    }
+
+    #carruselVita .carousel-item img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+}
+
+/* ===== Sidebar fija ===== */
+.sidebar-sticky { 
+    position: sticky; top: 56px; 
+}
+
+/* ===== Alto útil = viewport - header, con scroll interno del menú ===== */
+.sidebar-scroll { 
+    max-height: calc(100vh - 56px); overflow: auto; 
+}
