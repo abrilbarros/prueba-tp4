@@ -1,5 +1,3 @@
-import { MEDICOS_SEED } from "./data-medicos.js";
-
 const usuario = JSON.parse(sessionStorage.getItem("usuarioLogueado"));
 
 //Solo si el usuario es Administrador ingresa
@@ -8,15 +6,6 @@ if (!usuario || usuario.tipoUsuario !== "Administrador") {
 };
 
 const STORAGE_KEY = "medicos";
-
-// Inicializa LocalStorage si está vacío
-(function inicializarLocalStorage() {
-    if (!localStorage.getItem(STORAGE_KEY)) {
-        console.log("Inicializando LocalStorage con datos de ejemplo...");
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(MEDICOS_SEED));
-    }
-})();
-
 // ==================== PERSISTENCIA ====================
 
 function obtenerMedicos() {
