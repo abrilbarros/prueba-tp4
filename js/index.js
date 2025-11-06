@@ -1,3 +1,8 @@
+import { inicializarDatos } from "./init.js";
+
+inicializarDatos();
+
+
 const btnInicio = document.getElementById("btnInicio");
 const btnCerrar = document.getElementById("btnCierre");
 const btnInicioMob = document.getElementById("btnInicioMob")

@@ -1,5 +1,5 @@
 // ==================== Datos y configuración ====================
-import { MEDICOS_SEED, ESPECIALIDADES_SEED } from './data-medicos.js';
+import { MEDICOS_SEED, ESPECIALIDADES_SEED } from './seed.js';
 
 const KEY = 'medicos';
 const LIMITE = 3;

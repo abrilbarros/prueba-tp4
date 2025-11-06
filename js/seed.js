@@ -1,20 +1,44 @@
 export const ESPECIALIDADES_SEED = [
-    "Clínica Médica",
-    "Pediatría",
-    "Cirugía General",
-    "Dermatología",
-    "Traumatología",
-    "Ginecología y Obstetricia",
-    "Neurología",
+    {
+        id: 1,
+        nombre: "Clínica Médica"
+    },
+    {
+        id: 2,
+        nombre: "Pediatría"
+    }, 
+    {
+        id: 3,
+        nombre: "Cirugía General"
+    },
+    {
+        id: 4,
+        nombre: "Cardiología"
+    },
+    {
+        id: 5,
+        nombre: "Dermatologia"
+    },
+    {
+        id: 6,
+        nombre: "Traumatologia"
+    },
+    {   id: 7,
+        nombre: "Ginecología y Obstetricia"
+    },
+    {
+        id: 8,
+        nombre: "Neurología"
+    },
 ];
 
 export const OBRAS_SOCIALES_SEED = [
-    "OSDE",
-    "Swiss Medical",
-    "Galeno",
-    "Medifé",
-    "OMINT",
-    "PAMI",
+    { id: 1, nombre: "OSDE", descripcion: "Obra Social de Ejecutivos", porcentajeCobertura: 80 },
+    { id: 2, nombre: "Swiss Medical", descripcion: "Swiss Medical Group", porcentajeCobertura: 75 },
+    { id: 3, nombre: "Galeno", descripcion: "Compañía de Seguros Galeno", porcentajeCobertura: 70 },
+    { id: 4, nombre: "Medifé", descripcion: "Medicina Integral Familiar y Empresarial", porcentajeCobertura: 65 },
+    { id: 5, nombre: "OMINT", descripcion: "Obra Social del Instituto Médico", porcentajeCobertura: 85 },
+    { id: 6, nombre: "PAMI", descripcion: "Programa de Atención Médica Integral", porcentajeCobertura: 90 },
 ];
 
 export const MEDICOS_SEED = [
