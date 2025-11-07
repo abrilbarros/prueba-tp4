@@ -9,7 +9,8 @@ const btnInicioMob = document.getElementById("btnInicioMob")
 const btnCerrarMob = document.getElementById("btnCierreMob")
 
 // Verifica si hay usuario logueado
-const usuario = JSON.parse(sessionStorage.getItem("usuarioLogueado"));
+const usuario = sessionStorage.getItem("usuarioLogueado");
+const rol = sessionStorage.getItem("rolUsuario");
 
 if (usuario) {
   // Oculta "Iniciar sesión" y muestra "Cerrar sesión" si esta logueado
@@ -27,7 +28,7 @@ else {
 }
 
 function cerrarSesion() {
-  sessionStorage.removeItem("usuarioLogueado");
+  sessionStorage.clear();
   window.location.href = "index.html";
 }
 
@@ -38,7 +39,7 @@ btnCerrarMob.addEventListener("click", cerrarSesion);
 const btnAdmin = document.getElementById("adminMed")
 const btnAdminMob = document.getElementById("adminMedMob")
 
-if (usuario && usuario.tipoUsuario === "Administrador") {
+if (usuario && rol === "admin") {
   btnAdmin.classList.remove("d-none")
   btnAdminMob.classList.remove("d-none")
 }

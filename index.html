@@ -51,7 +51,7 @@
         <li class="nav-item"><a class="nav-link text-primary" href="contacto.html">Contacto</a></li>
         <li class="nav-item"><a class="nav-link text-primary" href="faq.html">FAQ</a></li>
         <li id="adminMed" class="nav-item d-none"><a class="nav-link text-primary"
-            href="admin-medicos.html">Adminstrador</a></li>
+            href="admin-medicos.html">Admin</a></li>
         <li class="nav-item" id="btnInicio">
           <button class="btn btn-success ms-2" data-bs-toggle="modal" data-bs-target="#loginModal">Iniciar
             sesión</button>
@@ -78,7 +78,7 @@
         <li class="nav-item"><a class="nav-link text-primary" href="contacto.html">Contacto</a></li>
         <li class="nav-item"><a class="nav-link text-primary" href="faq.html">FAQ</a></li>
         <li id="adminMedMob" class="nav-item d-none"><a class="nav-link text-primary"
-            href="admin-medicos.html">Administrador</a></li>
+            href="admin-medicos.html">Admin</a></li>
         <li class="nav-item d-flex justify-content-center" id="btnInicioMob">
           <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginModal">
             Iniciar sesión
@@ -284,14 +284,10 @@
         <div class="modal-body">
           <!-- Formulario dentro del modal -->
           <form id="loginForm">
-            <label for="tipoUsuario" class="form-label">Tipo de usuario:</label>
-            <select id="tipoUsuario" class="form-select mb-3">
-              <option value="Administrador">Administrador</option>
-              <option value="Cliente">Cliente</option>
-            </select>
-
-            <input id="email" type="email" class="form-control mb-2" placeholder="nombre@vita.com" required>
-            <input id="pass" type="password" class="form-control mb-2" placeholder="Contraseña" required>
+            <label for="user" class="form-label">Usuario:</label>
+            <input id="user" type="text" class="form-control mb-2" placeholder="Ingrese su usuario" required>
+            <label for="pass" class="form-label">Contraseña:</label>
+            <input id="pass" type="password" class="form-control mb-2" placeholder="Ingrese su contraseña" required>
 
             <div class="modal-footer">
               <button type="submit" class="btn btn-primary" id="btnLogin">Ingresar</button>
@@ -312,7 +308,7 @@
   <script type="module" src="js/staff.js"></script>
 
   <!-- JS login -->
-  <script type="module" src="js/login/login.js"></script>
+  <script type="module" src="js/login.js"></script>
 
 </body>
 
