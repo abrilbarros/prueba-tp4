@@ -140,15 +140,28 @@
 
     <!-- ======================== STAFF ======================== -->
     <section id="staff" class="container my-5">
-      <header class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-3">
-        <h2 class="h4 m-0">Nuestro equipo</h2>
-        <div class="d-flex gap-2">
-          <input id="busqueda" type="search" class="form-control" placeholder="Buscar por nombre…">
-          <select id="filtroEspecialidad" class="form-select">
-            <option value="">Todas las especialidades</option>
-          </select>
+      <header class="mb-3">
+        <div class="row align-items-center g-2">
+          <div class="col-12 col-md-auto">
+            <h2 class="h4 m-0">Nuestro equipo</h2>
+          </div>
+
+          <div class="col-12 col-md">
+            <div class="row g-2">
+              <div class="col-12 col-md-8 col-lg-9">
+                <input id="busqueda" type="search" class="form-control form-control-lg"
+                  placeholder="Buscar por nombre o especialidad">
+              </div>
+              <div class="col-12 col-md-4 col-lg-3">
+                <select id="filtroEspecialidad" class="form-select form-select-lg">
+                  <option value="">Todas las especialidades</option>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
       </header>
+
       <div id="staffGrid" class="row g-4"><!-- cards acá --></div>
     </section>
 
@@ -292,14 +305,15 @@
   <!-- BOOTSTRAP JS -->
   <script src="js/bootstrap.bundle.min.js" defer></script>
 
+  <!-- JS index -->
+  <script type="module" src="js/index.js"></script>
+
   <!-- JS staff -->
   <script type="module" src="js/staff.js"></script>
 
   <!-- JS login -->
   <script type="module" src="js/login/login.js"></script>
 
-  <!-- JS index -->
-  <script type="module" src="js/index.js"></script>
 </body>
 
 </html>
