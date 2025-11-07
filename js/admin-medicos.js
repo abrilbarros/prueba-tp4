@@ -1,7 +1,8 @@
-const usuario = JSON.parse(sessionStorage.getItem("usuarioLogueado"));
+const rol = sessionStorage.getItem("rolUsuario");
 
 //Solo si el usuario es Administrador ingresa
-if (!usuario || usuario.tipoUsuario !== "Administrador") {
+if (rol !== "admin") {
+    alert("Acceso denegado. Redirigiendo a la página principal.");
     window.location.href = "index.html"
 };
 
