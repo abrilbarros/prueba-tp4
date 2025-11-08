@@ -213,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
         renderMisTurnos();   // actualiza la tabla del usuario
     });
 
-    // ===== "Mis turnos" (solo Avery Pascal) =====
+    // ===== "Mis turnos" (Avery Pascal) =====
     function renderMisTurnos() {
         if (!tbodyTablaMisTurnos) return;
 
