@@ -1,4 +1,4 @@
-// — Especialidades
+// Especialidades
 export const ESPECIALIDADES_SEED = [
     { id: 1, nombre: "Clínica Médica" },
     { id: 2, nombre: "Pediatría" },
@@ -10,7 +10,7 @@ export const ESPECIALIDADES_SEED = [
     { id: 8, nombre: "Neurología" }
 ];
 
-// — Obras Sociales
+// Obras Sociales
 export const OBRAS_SOCIALES_SEED = [
     { id: 1, nombre: "OSDE", descripcion: "Obra Social de Ejecutivos", porcentajeCobertura: 80 },
     { id: 2, nombre: "Swiss Medical", descripcion: "Swiss Medical Group", porcentajeCobertura: 75 },
@@ -20,7 +20,7 @@ export const OBRAS_SOCIALES_SEED = [
     { id: 6, nombre: "PAMI", descripcion: "Programa de Atención Médica Integral", porcentajeCobertura: 90 }
 ];
 
-// — Médicos
+// Médicos
 export const MEDICOS_SEED = [
     {
         id: 1,
@@ -72,14 +72,14 @@ export const MEDICOS_SEED = [
     }
 ];
 
-// — Agenda (horarios disponibles por médico y fecha)
+// Agenda (horarios disponibles por médico y fecha)
 export const AGENDA_SEED = [
     { medicoId: 1, fecha: "2025-11-12", horas: ["09:00", "09:30", "10:00", "10:30", "11:00"] },
     { medicoId: 2, fecha: "2025-11-12", horas: ["14:00", "14:30", "15:00", "15:30"] },
     { medicoId: 3, fecha: "2025-11-13", horas: ["08:00", "08:30", "09:00"] }
 ];
 
-// — Turnos (uno ocupado de ejemplo)
+// Turnos (uno ocupado de ejemplo)
 export const TURNOS_SEED = [
     {
         id: 1,
