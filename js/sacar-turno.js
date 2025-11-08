@@ -46,7 +46,7 @@ function calcularCopago(precioBase, porcentajeCobertura) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    // ===== Referencias UI =====
+    // ===== Referencias =====
     const selEspecialidad = document.getElementById("selectEspecialidad");
     const selMed = document.getElementById("selectMedico");
     const selObra = document.getElementById("selectObra");
@@ -213,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
         renderMisTurnos();   // actualiza la tabla del usuario
     });
 
-    // ===== “Mis turnos” (solo Avery Pascal) =====
+    // ===== "Mis turnos" (solo Avery Pascal) =====
     function renderMisTurnos() {
         if (!tbodyTablaMisTurnos) return;
 
