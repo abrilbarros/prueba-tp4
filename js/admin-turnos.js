@@ -1,63 +1,151 @@
-// ===== helpers locales =====
+// =============== Helpers de LocalStorage ===============
 function leerMedicos() {
-    try { return JSON.parse(localStorage.getItem("medicos")) || []; } catch { return []; }
+    try { return JSON.parse(localStorage.getItem("medicos")) || []; }
+    catch { return []; }
 }
 function leerTurnos() {
-    try { return JSON.parse(localStorage.getItem("turnos")) || []; } catch { return []; }
+    try { return JSON.parse(localStorage.getItem("turnos")) || []; }
+    catch { return []; }
 }
 function guardarTurnos(lista) {
     localStorage.setItem("turnos", JSON.stringify(lista || []));
 }
+function leerAgenda() {
+    try { return JSON.parse(localStorage.getItem("agenda")) || []; }
+    catch { return []; }
+}
+function guardarAgenda(lista) {
+    localStorage.setItem("agenda", JSON.stringify(lista || []));
+}
 
+// =============== Utilidades ===============
+const HORAS_MEDIA = [
+    "08:00", "08:30", "09:00", "09:30", "10:00", "10:30",
+    "11:00", "11:30", "12:00", "12:30", "13:00", "13:30",
+    "14:00", "14:30", "15:00", "15:30", "16:00", "16:30",
+    "17:00", "17:30", "18:00"
+];
+
+function nombreMedicoPorId(id) {
+    const m = leerMedicos().find(x => Number(x.id) === Number(id));
+    return m?.apellidoNombre || `ID ${id}`;
+}
+
+// =============== DOM ===============
 document.addEventListener("DOMContentLoaded", () => {
-    const selMed = document.getElementById("filtroMedico");
-    const cuerpo = document.getElementById("tablaTurnos");
+    // refs
+    const selFiltroMedico = document.getElementById("filtroMedico");
 
-    function cargarMedicosSelect() {
-        const medicos = leerMedicos();
-        selMed.innerHTML = `<option value="">Todos</option>`;
-        medicos.forEach(m => {
-            const opt = document.createElement("option");
-            opt.value = m.id;
-            opt.textContent = m.apellidoNombre || `Médico ${m.id}`;
-            selMed.appendChild(opt);
+    const formAgenda = document.getElementById("formAgenda");
+    const selAgendaMedico = document.getElementById("agendaMedico");
+    const inpAgendaFecha = document.getElementById("agendaFecha");
+    const selAgendaHoras = document.getElementById("agendaHoras");
+    const divHorasCargadas = document.getElementById("listaHorasCargadas");
+
+    const cuerpoTabla = document.getElementById("tablaTurnos");
+
+    // =============== Cargar opciones de horas (multi) ===============
+    function cargarListaHoras() {
+        selAgendaHoras.innerHTML = "";
+        HORAS_MEDIA.forEach(h => {
+            const op = document.createElement("option");
+            op.value = h;
+            op.textContent = h;
+            selAgendaHoras.appendChild(op);
         });
     }
 
-    function render() {
-        const turnos = leerTurnos();
+    // =============== Cargar selectores de médicos y horarios ===============
+    function cargarMedicosSelect() {
         const medicos = leerMedicos();
-        const filtroMed = selMed.value;
+
+        // filtro principal (arriba)
+        selFiltroMedico.innerHTML = `<option value="">Todos</option>`;
+        medicos.forEach(m => {
+            const op = document.createElement("option");
+            op.value = m.id;
+            op.textContent = m.apellidoNombre || `Médico ${m.id}`;
+            selFiltroMedico.appendChild(op);
+        });
+
+        // selector del formulario de agenda
+        selAgendaMedico.innerHTML = `<option value="">Elegí un médico</option>`;
+        medicos.forEach(m => {
+            const op = document.createElement("option");
+            op.value = m.id;
+            op.textContent = m.apellidoNombre || `Médico ${m.id}`;
+            selAgendaMedico.appendChild(op);
+        });
+    }
+
+    // =============== Agenda ===============
+    function obtenerHorasDeAgenda(medicoId, fecha) {
+        const item = leerAgenda().find(x => Number(x.medicoId) === Number(medicoId) && x.fecha === fecha);
+        return item?.horas || [];
+    }
+
+    function upsertAgenda(medicoId, fecha, horasSeleccionadas) {
+        const agenda = leerAgenda();
+        const idx = agenda.findIndex(x => Number(x.medicoId) === Number(medicoId) && x.fecha === fecha);
+        const horasUnicas = Array.from(new Set(horasSeleccionadas)).sort();
+
+        if (idx >= 0) {
+            agenda[idx].horas = horasUnicas;
+        } else {
+            agenda.push({ medicoId: Number(medicoId), fecha, horas: horasUnicas });
+        }
+        guardarAgenda(agenda);
+    }
+
+    function mostrarHorasDeAgenda() {
+        divHorasCargadas.innerHTML = "";
+        const medicoId = selAgendaMedico.value;
+        const fecha = inpAgendaFecha.value;
+        if (!medicoId || !fecha) return;
+
+        const horas = obtenerHorasDeAgenda(medicoId, fecha);
+        if (!horas.length) {
+            divHorasCargadas.innerHTML = `<span class="text-body-secondary">No hay horas cargadas.</span>`;
+            return;
+        }
+
+        horas.forEach(h => {
+            const badge = document.createElement("span");
+            badge.className = "badge text-bg-light border";
+            badge.textContent = h;
+            divHorasCargadas.appendChild(badge);
+        });
+    }
+
+    // =============== Render de Turnos ===============
+    function renderTurnos() {
+        const turnos = leerTurnos();
+        const filtroMed = selFiltroMedico.value;
 
         const lista = turnos.filter(t =>
             filtroMed ? Number(t.medicoId) === Number(filtroMed) : true
         );
 
-        cuerpo.innerHTML = lista.length
-            ? ""
-            : `<tr><td colspan="9" class="text-center">No hay registros.</td></tr>`;
+        cuerpoTabla.innerHTML = lista.length ? "" :
+            `<tr><td colspan="9" class="text-center">No hay registros.</td></tr>`;
 
         lista.forEach(t => {
-            const med = medicos.find(m => Number(m.id) === Number(t.medicoId));
-            const nombreMed = med?.apellidoNombre || `ID ${t.medicoId}`;
-            const monto = typeof t.precioFinal === "number"
-                ? `$ ${t.precioFinal.toLocaleString("es-AR")}`
-                : "-";
+            const tr = document.createElement("tr");
+            const nombreMed = nombreMedicoPorId(t.medicoId);
+            const monto = typeof t.precioFinal === "number" ? `$ ${t.precioFinal.toLocaleString("es-AR")}` : "-";
             const estado = t.estado || "confirmada";
 
-            // Reglas según estado
-            const puedeAtender = estado === "confirmada";
-            const puedeCancelar = estado === "confirmada";
+            const acciones = [];
+            // Mostrar "Atendido" solo si NO está cancelada
+            if (estado !== "cancelada") {
+                acciones.push(
+                    `<button class="btn btn-outline-success btn-sm me-1" data-accion="atendido" data-id="${t.id}">Atendido</button>`
+                );
+            }
+            acciones.push(
+                `<button class="btn btn-danger btn-sm" data-accion="cancelar" data-id="${t.id}">Cancelar</button>`
+            );
 
-            const btnAtendido = puedeAtender
-                ? `<button class="btn btn-outline-success btn-sm me-1" data-accion="atendido" data-id="${t.id}">Atendido</button>`
-                : "";
-
-            const btnCancelar = puedeCancelar
-                ? `<button class="btn btn-danger btn-sm" data-accion="cancelar" data-id="${t.id}">Cancelar</button>`
-                : "";
-
-            const tr = document.createElement("tr");
             tr.innerHTML = `
         <td>${t.id}</td>
         <td>${t.fecha}</td>
@@ -67,43 +155,71 @@ document.addEventListener("DOMContentLoaded", () => {
         <td>${t.obraSocialNombre || "Particular"}</td>
         <td>${monto}</td>
         <td>${estado}</td>
-        <td class="text-end">
-          ${btnAtendido}${btnCancelar}
-        </td>`;
-            cuerpo.appendChild(tr);
+        <td class="text-end">${acciones.join(" ")}</td>
+      `;
+            cuerpoTabla.appendChild(tr);
         });
     }
 
-    // Transiciones de estado protegidas
-    cuerpo.addEventListener("click", (e) => {
+    // =============== Eventos tabla turnos ===============
+    cuerpoTabla.addEventListener("click", (e) => {
         const btn = e.target.closest("button[data-accion]");
         if (!btn) return;
 
         const id = Number(btn.dataset.id);
         const accion = btn.dataset.accion;
+
         const turnos = leerTurnos();
         const idx = turnos.findIndex(t => Number(t.id) === id);
         if (idx < 0) return;
 
-        const estadoActual = turnos[idx].estado || "confirmada";
-
-        if (accion === "atendido") {
-            if (estadoActual !== "confirmada") return;
-            turnos[idx].estado = "atendido";
+        if (accion === "cancelar") {
+            if (confirm("¿Cancelar este turno?")) {
+                turnos[idx].estado = "cancelada";
+            }
         }
 
-        if (accion === "cancelar") {
-            if (estadoActual !== "confirmada") return;
-            if (!confirm("¿Cancelar este turno?")) return;
-            turnos[idx].estado = "cancelada";
+        if (accion === "atendido") {
+            // Solo permitir si no está cancelada
+            if (turnos[idx].estado !== "cancelada") {
+                turnos[idx].estado = "atendida";
+            }
         }
 
         guardarTurnos(turnos);
-        render();
+        renderTurnos();
     });
 
-    selMed.addEventListener("change", render);
+    // =============== Eventos filtros / agenda ===============
+    selFiltroMedico.addEventListener("change", renderTurnos);
 
+    selAgendaMedico.addEventListener("change", mostrarHorasDeAgenda);
+    inpAgendaFecha.addEventListener("change", mostrarHorasDeAgenda);
+
+    formAgenda.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const medicoId = selAgendaMedico.value;
+        const fecha = inpAgendaFecha.value;
+
+        if (!medicoId || !fecha) {
+            alert("Elegí un médico y una fecha.");
+            return;
+        }
+
+        const horasSeleccionadas = Array.from(selAgendaHoras.selectedOptions).map(o => o.value);
+        if (!horasSeleccionadas.length) {
+            alert("Seleccioná al menos una hora.");
+            return;
+        }
+
+        upsertAgenda(medicoId, fecha, horasSeleccionadas);
+        mostrarHorasDeAgenda();
+        alert("Horarios guardados.");
+    });
+
+    // =============== Init ===============
+    cargarListaHoras();
     cargarMedicosSelect();
-    render();
+    renderTurnos();
+    mostrarHorasDeAgenda();
 });
