@@ -17,9 +17,18 @@ function guardarMedicosEnStorage(lista) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
 }
 
+function convertirImagenABase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject("Error al leer la imagen");
+        reader.readAsDataURL(file);
+    });
+}
+
 // ==================== CRUD ====================
 
-function guardarMedico() {
+async function guardarMedico() {
     const id = medicoIdInput.value;
     const nombre = nombreInput.value.trim();
     const apellido = apellidoInput.value.trim();
@@ -29,18 +38,17 @@ function guardarMedico() {
     const valorConsulta = parseInt(valorConsultaInput.value, 10);
     const descripcion = descripcionInput.value.trim();
 
+
     if (!matricula || !nombre || !apellido || !especialidad) {
         alert("Por favor, completá todos los campos obligatorios.");
         return;
     }
 
+    if (isNaN(valorConsulta) || valorConsulta <= 0) {
+        alert("El valor de los honorarios debe ser un número entero mayor que 0");
+        return;
+    }
 
-if (isNaN(valorConsulta) || valorConsulta <= 0) {
-    alert("El valor de los honorarios debe ser un número entero mayor que 0");
-    return;
-}
-
-    let medicos = obtenerMedicos();
 
     const medicoData = {
         apellidoNombre: `${nombre} ${apellido}`,
@@ -53,30 +61,62 @@ if (isNaN(valorConsulta) || valorConsulta <= 0) {
         bio: descripcion
     };
 
-    if (id) {
-        const medicoIndex = medicos.findIndex(med => med.id == id);
-        if (medicoIndex !== -1) {
-            medicoData.foto = medicos[medicoIndex].foto || 'img/doctor-placeholder.jpg';
-            medicos[medicoIndex] = { ...medicos[medicoIndex], ...medicoData };
-            alert("Médico modificado con éxito");
+    if (fotoMedicoInput.files && fotoMedicoInput.files[0]) {
+        try {
+            medicoData.foto = await convertirImagenABase64(fotoMedicoInput.files[0]);
+        } catch (error) {
+            alert("Error al procesar la imagen");
+            return;
         }
-    } else {
-        
-        const idsExistentes = medicos
-            .map(m => m.id)
-            .filter(n => typeof n === "number" && !isNaN(n));
-
-        const nuevoId = idsExistentes.length > 0 ? Math.max(...idsExistentes) + 1 : 1;
-        medicoData.id = nuevoId;
-        medicoData.foto = 'img/doctor-placeholder.jpg';
-        medicos.push(medicoData);
-        alert("Médico agregado con éxito");
     }
+
+    if (id) {
+        editarMedicoExistente(parseInt(id), medicoData);
+    } else {
+        agregarMedico(medicoData);
+    }
+}
+
+function agregarMedico(medicoData) {
+    let medicos = obtenerMedicos();
+
+    const idsExistentes = medicos
+        .map(m => m.id)
+        .filter(n => typeof n === "number" && !isNaN(n));
+
+    const nuevoId = idsExistentes.length > 0 ? Math.max(...idsExistentes) + 1 : 1;
+    medicoData.id = nuevoId;
+
+    if (!medicoData.foto) {
+        medicoData.foto = 'img/doctor-placeholder.jpg';
+    }
+
+    medicos.push(medicoData);
+    guardarMedicosEnStorage(medicos);
+    cargarMedicos();
+    limpiarFormulario();
+    alert("Médico agregado con éxito");
+}
+
+
+function editarMedicoExistente(id, medicoData) {
+    let medicos = obtenerMedicos();
+    const medicoIndex = medicos.findIndex(med => med.id == id);
+
+    if (medicoIndex === -1) return;
+
+    if (!medicoData.foto) {
+        medicoData.foto = medicos[medicoIndex].foto || 'img/doctor-placeholder.jpg';
+    }
+
+    medicos[medicoIndex] = { ...medicos[medicoIndex], ...medicoData };
 
     guardarMedicosEnStorage(medicos);
     cargarMedicos();
     limpiarFormulario();
+    alert("Médico modificado con éxito");
 }
+
 
 function eliminarMedico(id) {
     const medicos = obtenerMedicos();
@@ -113,13 +153,14 @@ function editarMedico(id) {
 function limpiarFormulario() {
     formMedico.reset();
     medicoIdInput.value = "";
+    fotoMedicoInput.value = "";
     tituloFormulario.textContent = "Agregar Nuevo Médico";
     btnGuardarMedico.textContent = "Guardar Médico";
     btnCancelarEdicion.style.display = "none";
 }
 
 function cargarMedicos() {
-    const tbody = document.getElementById("tablaMedicos");
+    const tbody = document.querySelector("#tablaMedicos tbody");
     const medicos = obtenerMedicos();
 
     tbody.innerHTML = medicos.length
@@ -149,11 +190,13 @@ function cargarMedicos() {
 let formMedico, medicoIdInput, matriculaInput, nombreInput, apellidoInput;
 let especialidadInput, obraSocialInput, valorConsultaInput, descripcionInput;
 let btnGuardarMedico, btnCancelarEdicion, tituloFormulario;
+let fotoMedicoInput;
 
 document.addEventListener("DOMContentLoaded", () => {
     formMedico = document.getElementById("formMedico");
     medicoIdInput = document.getElementById("medicoId");
     matriculaInput = document.getElementById("matricula");
+    fotoMedicoInput = document.getElementById("fotoMedico");
     nombreInput = document.getElementById("nombre");
     apellidoInput = document.getElementById("apellido");
     especialidadInput = document.getElementById("especialidad");
