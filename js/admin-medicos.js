@@ -34,7 +34,7 @@ async function guardarMedico() {
     const apellido = apellidoInput.value.trim();
     const matricula = matriculaInput.value.trim();
     const especialidad = especialidadInput.value.trim();
-    const obraSocial = obraSocialInput.value;
+    const obraSocial = Array.from(document.querySelectorAll("#obraSocialContainer input[type=checkbox]:checked")).map(cb => cb.value);
     const valorConsulta = parseInt(valorConsultaInput.value, 10);
     const descripcion = descripcionInput.value.trim();
 
@@ -57,7 +57,7 @@ async function guardarMedico() {
         email: "",
         telefono: "",
         honorarios: valorConsulta,
-        obrasSociales: obraSocial.split(',').map(os => os.trim()),
+        obrasSociales: obraSocial,
         bio: descripcion
     };
 
@@ -140,7 +140,11 @@ function editarMedico(id) {
     nombreInput.value = partes.join(" ");
     matriculaInput.value = medico.matricula;
     especialidadInput.value = medico.especialidad;
-    obraSocialInput.value = medico.obrasSociales?.join(", ") || "";
+    // Limpiar todos los checkboxes
+    document.querySelectorAll("#obraSocialContainer input[type=checkbox]").forEach(cb => {
+        cb.checked = medico.obrasSociales?.includes(cb.value) || false;
+    });
+
     valorConsultaInput.value = medico.honorarios;
     descripcionInput.value = medico.bio;
     medicoIdInput.value = medico.id;
@@ -206,6 +210,29 @@ document.addEventListener("DOMContentLoaded", () => {
     btnGuardarMedico = document.getElementById("btnGuardarMedico");
     btnCancelarEdicion = document.getElementById("btnCancelarEdicion");
     tituloFormulario = document.getElementById("tituloFormulario");
+    // Crear checkboxes dinámicamente
+    const obraSocialContainer = document.getElementById("obraSocialContainer");
+
+    obrasSocialesDisponibles.forEach(os => {
+        const div = document.createElement("div");
+        div.classList.add("form-check");
+
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.classList.add("form-check-input");
+        input.id = `obraSocial-${os}`;
+        input.value = os;
+
+        const label = document.createElement("label");
+        label.classList.add("form-check-label");
+        label.htmlFor = `obraSocial-${os}`;
+        label.textContent = os;
+
+        div.appendChild(input);
+        div.appendChild(label);
+        obraSocialContainer.appendChild(div);
+    });
+
 
     formMedico.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -216,6 +243,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     cargarMedicos();
 });
+
+
+const obrasSocialesDisponibles = [
+    "OSDE",
+    "Swiss Medical",
+    "Galeno",
+    "Medicorp",
+    "PAMI"
+];
+
+
+
+
 
 window.eliminarMedico = eliminarMedico;
 window.editarMedico = editarMedico;

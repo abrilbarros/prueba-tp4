@@ -178,8 +178,8 @@
 
                   <div class="row g-3">
                     <div class="col-md-4">
-                      <label for="matricula" class="form-label"
-                        >Matrícula (MN-MP)</label
+                      <label for="matricula" class="form-label fw-bold"
+                        >Matrícula</label
                       >
                       <input
                         type="text"
@@ -188,19 +188,11 @@
                         required
                       />
                     </div>
+
                     <div class="col-md-4">
-                      <label for="fotoMedico" class="form-label"
-                        >Foto del médico</label
+                      <label for="nombre" class="form-label fw-bold"
+                        >Nombre</label
                       >
-                      <input
-                        type="file"
-                        class="form-control"
-                        id="fotoMedico"
-                        accept="image/*"
-                      />
-                    </div>
-                    <div class="col-md-4">
-                      <label for="nombre" class="form-label">Nombre</label>
                       <input
                         type="text"
                         class="form-control"
@@ -209,7 +201,9 @@
                       />
                     </div>
                     <div class="col-md-4">
-                      <label for="apellido" class="form-label">Apellido</label>
+                      <label for="apellido" class="form-label fw-bold"
+                        >Apellido</label
+                      >
                       <input
                         type="text"
                         class="form-control"
@@ -217,8 +211,8 @@
                         required
                       />
                     </div>
-                    <div class="col-md-6">
-                      <label for="especialidad" class="form-label"
+                    <div class="col-md-4">
+                      <label for="especialidad" class="form-label fw-bold"
                         >Especialidad</label
                       >
                       <input
@@ -228,14 +222,8 @@
                         required
                       />
                     </div>
-                    <div class="col-md-6">
-                      <label for="obraSocial" class="form-label"
-                        >Obras Sociales (separar con comas)</label
-                      >
-                      <input type="text" class="form-control" id="obraSocial" />
-                    </div>
                     <div class="col-md-3">
-                      <label for="valorConsulta" class="form-label"
+                      <label for="valorConsulta" class="form-label fw-bold"
                         >Valor Consulta ($)</label
                       >
                       <input
@@ -247,8 +235,27 @@
                         required
                       />
                     </div>
+                    <div class="col-md-4">
+                      <label for="fotoMedico" class="form-label fw-bold"
+                        >Foto del médico</label
+                      >
+                      <input
+                        type="file"
+                        class="form-control"
+                        id="fotoMedico"
+                        accept="image/*"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label fw-bold">Obras Sociales</label>
+                      <div
+                        id="obraSocialContainer"
+                        class="d-flex flex-column gap-1"
+                      ></div>
+                    </div>
+
                     <div class="col-md-9">
-                      <label for="descripcion" class="form-label"
+                      <label for="descripcion" class="form-label fw-bold"
                         >Descripción/Bio</label
                       >
                       <textarea
