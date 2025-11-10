@@ -7,7 +7,7 @@ import {
     TURNOS_SEED
 } from "./seed.js";
 
-(function inicializarDatos() {
+export function inicializarDatos() {
     try {
         if (!localStorage.getItem("especialidades")) {
             localStorage.setItem("especialidades", JSON.stringify(ESPECIALIDADES_SEED));
@@ -27,4 +27,4 @@ import {
     } catch (e) {
         console.error("Error inicializando datos:", e);
     }
-})();
+};
