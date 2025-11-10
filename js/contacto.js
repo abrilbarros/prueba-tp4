@@ -1,3 +1,6 @@
+import { configNavbar } from "./herramientas.js";
+configNavbar();
+
 const formContacto = document.getElementById('contactoForm');
 const inputNombre = document.getElementById('nombre');
 const inputCorreo = document.getElementById('correo');

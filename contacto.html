@@ -18,6 +18,7 @@
 
     <!-- estilos del proyecto -->
     <link rel="stylesheet" href="css/styles.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 
 <body data-page="contacto">
@@ -49,6 +50,30 @@
                         aria-current="page">Contacto</a>
                 </li>
                 <li class="nav-item"><a class="nav-link text-primary" href="faq.html">FAQ</a></li>
+                <!-- menú usuario logueado -->
+                <li class="dropdown d-none" id="menuUsuario">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle text-primary fs-5 me-2"></i>
+                        <span id="nombreUsuario"></span>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li id="adminMed" class="d-none">
+                            <a class="dropdown-item" href="admin-medicos.html">
+                                <i class="bi bi-gear fs-6 text-black"></i> Panel Admin</a>
+                        </li>
+                        <li id="turnosDropdown" class="">
+                            <a class="dropdown-item" href="sacar-turno.html">
+                                <i class="bi bi-calendar-event text-black"></i> Turnos</a>
+                        </li>
+                        <li id="btnCierre">
+                            <a class="dropdown-item" style="cursor: pointer;">
+                                <i class="bi bi-box-arrow-right fs-6 text-danger"></i> Cerrar sesión
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </nav>
@@ -250,7 +275,7 @@
     <script src="js/bootstrap.bundle.min.js" defer></script>
 
     <!-- JS contactos -->
-    <script src="js/contacto.js"></script>
+    <script src="js/contacto.js" type="module"></script>
 
     <!-- JS login -->
     <script type="module" src="js/login.js"></script>
