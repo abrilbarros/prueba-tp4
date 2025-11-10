@@ -12,17 +12,17 @@ export function configNavbar() {
     
     if (usuarioLogueado) {
     // Oculta "Iniciar sesión" y muestra "Cerrar sesión" si esta logueado
-    btnInicio.classList.add("d-none");
-    menuUsuario.classList.remove("d-none");
-    btnInicioMob.classList.add("d-none");
-    btnCerrarMob.classList.remove("d-none");
+    if(btnInicio) btnInicio.classList.add("d-none");
+    if(menuUsuario) menuUsuario.classList.remove("d-none");
+    if(btnInicioMob) btnInicioMob.classList.add("d-none");
+    if(btnCerrarMob) btnCerrarMob.classList.remove("d-none");
     }
     else {
     // Si no hay usuario logueado, mostrar "Iniciar sesión"
-    btnInicio.classList.remove("d-none");
-    menuUsuario.classList.add("d-none");
-    btnInicioMob.classList.remove("d-none");
-    btnCerrarMob.classList.add("d-none");
+    if(btnInicio)btnInicio.classList.remove("d-none");
+    if(menuUsuario) menuUsuario.classList.add("d-none");
+    if(btnInicioMob) btnInicioMob.classList.remove("d-none");
+    if(btnCerrarMob)btnCerrarMob.classList.add("d-none");
     }
 
     function cerrarSesion() {
@@ -30,8 +30,8 @@ export function configNavbar() {
     window.location.href = "index.html";
     }
 
-    btnCerrar.addEventListener("click", cerrarSesion);
-    btnCerrarMob.addEventListener("click", cerrarSesion);
+    if(btnCerrar) btnCerrar.addEventListener("click", cerrarSesion);
+    if(btnCerrarMob)btnCerrarMob.addEventListener("click", cerrarSesion);
 
     //Solo muestra la pagina "Administrador" en navbar si esta logueado un administrador
     //Solo muestra turnos si no es admin
@@ -41,13 +41,13 @@ export function configNavbar() {
     const btnTurnosMob = document.getElementById("btnTurnosMob")
 
     if (usuarioLogueado && usuario.rol === "admin") {
-    btnAdmin.classList.remove("d-none")
-    btnAdminMob.classList.remove("d-none")
-    btnTurnos.classList.add("d-none")
+        if(btnAdmin) btnAdmin.classList.remove("d-none")
+        if(btnAdminMob) btnAdminMob.classList.remove("d-none")
+        if(btnTurnos) btnTurnos.classList.add("d-none")
     }
 
     if (usuarioLogueado && usuario.rol === "user") {
-    btnTurnosMob.classList.remove("d-none")
+        if(btnTurnosMob) btnTurnosMob.classList.remove("d-none")
     }
 
     if(usuarioLogueado){
