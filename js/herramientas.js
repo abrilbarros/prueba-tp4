@@ -50,8 +50,10 @@ export function configNavbar() {
     btnTurnosMob.classList.remove("d-none")
     }
 
-    const nombreUsuario = document.getElementById("nombreUsuario")
-    nombreUsuario.textContent = `${usuario.nombre}(${usuario.rol})`
+    if(usuarioLogueado){
+        const nombreUsuario = document.getElementById("nombreUsuario")
+        nombreUsuario.textContent = `${usuario.nombre}(${usuario.rol})`
+    }
 }
 
 export function restringir() {
@@ -69,5 +71,8 @@ export function restringir() {
         setTimeout(() => {
             window.location.href = "index.html";
         },1500);
+    }
+    else {
+        document.getElementById("contenido").style.display = "block";
     }
 };
