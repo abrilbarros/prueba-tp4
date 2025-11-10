@@ -1,3 +1,5 @@
+import { restringir } from "./herramientas.js";
+restringir();
 // =============== Helpers de LocalStorage ===============
 function leerMedicos() {
     try { return JSON.parse(localStorage.getItem("medicos")) || []; }

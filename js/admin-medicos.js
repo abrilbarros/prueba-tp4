@@ -1,11 +1,5 @@
-const rol = sessionStorage.getItem("rolUsuario");
-
-//Solo si el usuario es Administrador ingresa
-if (rol !== "admin") {
-    alert("Acceso denegado. Redirigiendo a la página principal.");
-    window.location.href = "index.html"
-};
-
+import { restringir } from "./herramientas.js";
+restringir();
 const STORAGE_KEY = "medicos";
 // ==================== PERSISTENCIA ====================
 
