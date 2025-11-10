@@ -8,10 +8,17 @@ async function loginUsuario(username, password) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({username, password})
         })
-
+        const mensaje = document.getElementById("mensaje");
         if (!response.ok) {
-            throw new Error("Usuario o Contraseña incorrectos");
+            mensaje.className = "alert alert-danger text-center"
+            mensaje.role = "alert"
+            mensaje.textContent = "Usuario o Contraseña incorrectos"
+            return null
         }
+
+        mensaje.className = "alert alert-success text-center"
+            mensaje.role = "alert"
+            mensaje.textContent = "BIENVENIDO"
 
         const data = await response.json();
         sessionStorage.setItem("usuarioLogueado", data.accessToken);
@@ -26,9 +33,11 @@ async function loginUsuario(username, password) {
 async function obtenerUsuario(url) {
     const response = await fetch (url);
     const data = await response.json();
+    const DataUsuario = {nombre: data.firstName, apellido: data.lastName, rol: data.role};
 
-    sessionStorage.setItem("rolUsuario", data.role);
-    return data;
+
+    sessionStorage.setItem("usuario", JSON.stringify(DataUsuario));
+    return DataUsuario;
 };
 
 
@@ -45,10 +54,14 @@ formulario.addEventListener("submit", async function(event) {
     const url = `https://dummyjson.com/users/${dataUser.id}`;
     const usuario = await obtenerUsuario (url);
 
-    if (usuario.role === "admin") {
-        window.location.href = "admin-medicos.html";
+    if (usuario.rol === "admin") {
+        setTimeout(() => {
+            window.location.href = "admin-medicos.html";
+        },1000);
     }
     else {
-        window.location.href = "index.html";
+        setTimeout(() => {
+            window.location.href = "index.html";
+        },1000);
     }
 })

@@ -59,10 +59,10 @@
           </a>
         </li>
         <!-- menú usuario logueado -->
-         <div class="dropdown d-none" id="menuUsuario">
+         <li class="dropdown d-none" id="menuUsuario">
           <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-person-circle text-primary fs-5 me-2"></i>
-            <span>Usuario</span>
+            <span id="nombreUsuario"></span>
           </a>
 
           <ul class="dropdown-menu dropdown-menu-end">
@@ -72,7 +72,7 @@
             </li>
             <li id="turnosDropdown" class="">
               <a class="dropdown-item" href="sacar-turno.html">
-                <i class="bi bi-calendar-event text-black"></i> Mis turnos</a>
+                <i class="bi bi-calendar-event text-black"></i> Turnos</a>
             </li>
             <li id="btnCierre">
               <a class="dropdown-item" style="cursor: pointer;">
@@ -80,7 +80,7 @@
               </a>
             </li>
           </ul>
-        </div>
+        </li>
       </ul>
     </div>
   </nav>
@@ -100,7 +100,9 @@
         <li class="nav-item"><a class="nav-link text-primary" href="contacto.html">Contacto</a></li>
         <li class="nav-item"><a class="nav-link text-primary" href="faq.html">FAQ</a></li>
         <li id="adminMedMob" class="nav-item d-none"><a class="nav-link text-primary"
-            href="admin-medicos.html">Admin</a></li>
+            href="admin-medicos.html">Panel Admin</a></li>
+        <li id="btnTurnosMob" class="nav-item d-none"><a class="nav-link text-primary"
+            href="sacar-turno.html">Turnos</a></li>
         <li class="nav-item d-flex justify-content-center" id="btnInicioMob">
           <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginModal">
             Iniciar sesión
@@ -310,6 +312,7 @@
             <input id="user" type="text" class="form-control mb-2" placeholder="Ingrese su usuario" required>
             <label for="pass" class="form-label">Contraseña:</label>
             <input id="pass" type="password" class="form-control mb-2" placeholder="Ingrese su contraseña" required>
+            <div id="mensaje"></div>
 
             <div class="modal-footer">
               <button type="submit" class="btn btn-primary" id="btnLogin">Ingresar</button>

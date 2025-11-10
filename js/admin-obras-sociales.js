@@ -1,3 +1,5 @@
+import { restringir } from "./herramientas.js";
+restringir();
 // ===== helpers locales =====
 function leerObrasSociales() {
     try { return JSON.parse(localStorage.getItem("obrasSociales")) || []; }

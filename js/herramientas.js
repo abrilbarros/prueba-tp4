@@ -1,15 +1,16 @@
 export function configNavbar() {
+    // Verifica si hay usuario logueado
+    const usuarioLogueado = sessionStorage.getItem("usuarioLogueado");
+    const usuario = JSON.parse(sessionStorage.getItem("usuario"));
+
     const btnInicio = document.getElementById("btnInicio");
     const btnCerrar = document.getElementById("btnCierre");
     const menuUsuario = document.getElementById("menuUsuario");
     const btnInicioMob = document.getElementById("btnInicioMob")
     const btnCerrarMob = document.getElementById("btnCierreMob")
 
-    // Verifica si hay usuario logueado
-    const usuario = sessionStorage.getItem("usuarioLogueado");
-    const rol = sessionStorage.getItem("rolUsuario");
-
-    if (usuario) {
+    
+    if (usuarioLogueado) {
     // Oculta "Iniciar sesión" y muestra "Cerrar sesión" si esta logueado
     btnInicio.classList.add("d-none");
     menuUsuario.classList.remove("d-none");
@@ -36,11 +37,37 @@ export function configNavbar() {
     //Solo muestra turnos si no es admin
     const btnAdmin = document.getElementById("adminMed")
     const btnAdminMob = document.getElementById("adminMedMob")
-    const botTurnos = document.getElementById("turnosDropdown")
+    const btnTurnos = document.getElementById("turnosDropdown")
+    const btnTurnosMob = document.getElementById("btnTurnosMob")
 
-    if (usuario && rol === "admin") {
+    if (usuarioLogueado && usuario.rol === "admin") {
     btnAdmin.classList.remove("d-none")
     btnAdminMob.classList.remove("d-none")
-    botTurnos.classList.add("d-none")
+    btnTurnos.classList.add("d-none")
     }
+
+    if (usuarioLogueado && usuario.rol === "user") {
+    btnTurnosMob.classList.remove("d-none")
+    }
+
+    const nombreUsuario = document.getElementById("nombreUsuario")
+    nombreUsuario.textContent = `${usuario.nombre}(${usuario.rol})`
 }
+
+export function restringir() {
+    // Verifica si hay usuario logueado
+    const usuarioLogueado = sessionStorage.getItem("usuarioLogueado");
+    const usuario = JSON.parse(sessionStorage.getItem("usuario"));
+
+    if (!usuarioLogueado || usuario.rol !== "admin") {
+        const alerta = document.createElement("div");
+        alerta.className = "alert alert-danger text-center";
+        alerta.role = "alert";
+        alerta.textContent = "Acceso denegado. Redirigiendo a la página principal.";
+        document.body.prepend(alerta);
+
+        setTimeout(() => {
+            window.location.href = "index.html";
+        },1500);
+    }
+};

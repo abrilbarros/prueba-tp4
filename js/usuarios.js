@@ -1,4 +1,5 @@
-
+import { restringir } from "./herramientas.js";
+restringir();
 document.addEventListener('DOMContentLoaded', async() =>{
     const tablaUsuariosBody = document.querySelector("#tablaUsuarios tbody")
 
