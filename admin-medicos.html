@@ -44,66 +44,137 @@
       </div>
     </header>
 
-    <!-- Panel mobile (offcanvas) -->
-    <div
-      class="offcanvas offcanvas-start d-md-none"
-      tabindex="-1"
-      id="panelMobile"
-    >
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title">Panel</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="offcanvas"
-        ></button>
-      </div>
-      <div class="offcanvas-body">
-        <ul class="nav nav-pills flex-column gap-1">
-          <li class="nav-item">
-            <a
-              class="nav-link active"
-              href="admin-medicos.html"
-              data-bs-dismiss="offcanvas"
-            >
-              <i class="bi bi-person-vcard me-2"></i>Médicos
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" data-bs-dismiss="offcanvas">
-              <i class="bi bi-hospital me-2"></i>Especialidades
-            </a>
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              href="admin-obras-sociales.html"
-              data-bs-dismiss="offcanvas"
-            >
-              <i class="bi bi-shield-plus me-2"></i>Obras sociales
-            </a>
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              href="admin-turnos.html"
-              data-bs-dismiss="offcanvas"
-            >
-              <i class="bi bi-calendar-check me-2"></i>Turnos y reservas
-            </a>
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              href="usuarios.html"
-              data-bs-dismiss="offcanvas"
-            >
-              <i class="bi bi-people me-2"></i>Usuarios
-            </a>
-          </li>
-        </ul>
-      </div>
+  <!-- Panel mobile (offcanvas) -->
+  <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="panelMobile">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title">Panel</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
+    <div class="offcanvas-body">
+      <ul class="nav nav-pills flex-column gap-1">
+        <li class="nav-item">
+          <a class="nav-link active" href="admin-medicos.html" data-bs-dismiss="offcanvas">
+            <i class="bi bi-person-vcard me-2"></i>Médicos
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-bs-dismiss="offcanvas">
+            <i class="bi bi-hospital me-2"></i>Especialidades
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="admin-obras-sociales.html" data-bs-dismiss="offcanvas">
+            <i class="bi bi-shield-plus me-2"></i>Obras sociales
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="admin-turnos.html" data-bs-dismiss="offcanvas">
+            <i class="bi bi-calendar-check me-2"></i>Turnos
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-bs-dismiss="offcanvas">
+            <i class="bi bi-journal-check me-2"></i>Reservas
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-bs-dismiss="offcanvas">
+            <i class="bi bi-people me-2"></i>Usuarios
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Layout -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidebar fija en desktop -->
+      <nav class="col-12 col-md-3 col-lg-2 d-none d-md-block bg-white border-end p-0">
+        <div class="sidebar-sticky">
+          <div class="sidebar-scroll px-3 pt-3">
+            <h6 id="tituloPanel" class="text-uppercase text-body-secondary mb-3">Panel</h6>
+            <ul class="nav nav-pills flex-column gap-1" aria-labelledby="tituloPanel">
+              <li class="nav-item">
+                <a class="nav-link active" href="admin-medicos.html">
+                  <i class="bi bi-person-vcard me-2"></i>Médicos
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <i class="bi bi-hospital me-2"></i>Especialidades
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="admin-obras-sociales.html">
+                  <i class="bi bi-shield-plus me-2"></i>Obras sociales
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="admin-turnos.html">
+                  <i class="bi bi-calendar-check me-2"></i>Turnos y reservas
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <i class="bi bi-people me-2"></i>Usuarios
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="index.html">
+                  <i class="bi bi-box-arrow-up-right me-2"></i>Ver sitio
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Contenido principal -->
+      <main class="col-12 col-md-9 col-lg-10 p-3">
+        <!-- ======================== FORMULARIO ======================== -->
+        <div class="container-fluid mt-2 mt-md-0">
+          <h1 class="mb-4 text-center">Gestión de Profesionales Médicos 🩺</h1>
+          <hr />
+
+          <div class="card shadow mb-5">
+            <div class="card-header bg-primary text-white">
+              <h3 id="tituloFormulario" class="m-0">Agregar Nuevo Médico</h3>
+            </div>
+            <div class="card-body">
+              <form id="formMedico">
+                <input type="hidden" id="medicoId" value="" />
+
+                <div class="row g-3">
+                  <div class="col-md-4">
+                    <label for="matricula" class="form-label">Matrícula (MN-MP)</label>
+                    <input type="text" class="form-control" id="matricula" required />
+                  </div>
+                  <div class="col-md-4">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" required />
+                  </div>
+                  <div class="col-md-4">
+                    <label for="apellido" class="form-label">Apellido</label>
+                    <input type="text" class="form-control" id="apellido" required />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="especialidad" class="form-label">Especialidad</label>
+                    <input type="text" class="form-control" id="especialidad" required />
+                  </div>
+                  <div class="col-md-6">
+                    <label for="obraSocial" class="form-label">Obras Sociales (separar con comas)</label>
+                    <input type="text" class="form-control" id="obraSocial" />
+                  </div>
+                  <div class="col-md-3">
+                    <label for="valorConsulta" class="form-label">Valor Consulta ($)</label>
+                    <input type="number" class="form-control" id="valorConsulta" min="1" step="1" required />
+                  </div>
+                  <div class="col-md-9">
+                    <label for="descripcion" class="form-label">Descripción/Bio</label>
+                    <textarea class="form-control" id="descripcion" rows="2"></textarea>
+                  </div>
+                </div>
 
     <!-- Layout -->
     <div class="container-fluid">
