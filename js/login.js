@@ -43,13 +43,21 @@ async function obtenerUsuario(url) {
 
 formulario.addEventListener("submit", async function(event) {
     event.preventDefault();
-
+    const btnLoad = document.getElementById("btnLoad")
+    const btnLogin = document.getElementById("btnLogin")
     const username = document.getElementById("user").value.trim();
     const password= document.getElementById("pass").value.trim();
-
+    
+    btnLogin.classList.add("d-none")
+    btnLoad.classList.remove("d-none")
+    
     const dataUser = await loginUsuario(username, password);
 
-    if (!dataUser) return
+    if (!dataUser){
+        btnLoad.classList.add("d-none")
+        btnLogin.classList.remove("d-none")
+        return
+    }
 
     const url = `https://dummyjson.com/users/${dataUser.id}`;
     const usuario = await obtenerUsuario (url);

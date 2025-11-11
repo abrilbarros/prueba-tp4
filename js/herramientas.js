@@ -39,20 +39,20 @@ export function configNavbar() {
     const btnAdminMob = document.getElementById("adminMedMob")
     const btnTurnos = document.getElementById("turnosDropdown")
     const btnTurnosMob = document.getElementById("btnTurnosMob")
+    const turnosDesk = document.getElementById("turnosDesk")
+
 
     if (usuarioLogueado && usuario.rol === "admin") {
         if(btnAdmin) btnAdmin.classList.remove("d-none")
         if(btnAdminMob) btnAdminMob.classList.remove("d-none")
         if(btnTurnos) btnTurnos.classList.add("d-none")
-    }
-
-    if (usuarioLogueado && usuario.rol === "user") {
-        if(btnTurnosMob) btnTurnosMob.classList.remove("d-none")
+        if(btnTurnosMob) btnTurnosMob.classList.add("d-none")
     }
 
     if(usuarioLogueado){
         const nombreUsuario = document.getElementById("nombreUsuario")
         nombreUsuario.textContent = `${usuario.nombre}(${usuario.rol})`
+        if(turnosDesk)turnosDesk.classList.add("d-none")
     }
 }
 
@@ -73,6 +73,6 @@ export function restringir() {
         },1500);
     }
     else {
-        document.getElementById("contenido").style.display = "block";
+        document.getElementById("contenido").classList.remove("d-none");
     }
 };

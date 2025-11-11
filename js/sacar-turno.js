@@ -1,7 +1,7 @@
-// ===== Configuración de la simulación =====
-const CLIENTE_SIMULADO = "Avery Perez";
-
 // ===== Helpers de almacenamiento =====
+function leerUsuarioLogueado(){
+    try { return JSON.parse(sessionStorage.getItem("usuario")) || null;} catch { return [];}
+}
 function leerEspecialidades() {
     try { return JSON.parse(localStorage.getItem("especialidades")) || []; } catch { return []; }
 }
@@ -45,7 +45,30 @@ function calcularCopago(precioBase, porcentajeCobertura) {
     return { coberturaAplicada: cobertura, montoFinalPaciente: copago };
 }
 
+function logueado() {
+    const usuario = leerUsuarioLogueado();
+    const inputNombre = document.getElementById("nombre");
+    const inputApellido = document.getElementById("apellido");
+    const misTurnos = document.getElementById("misTurnos")
+
+    if (usuario && usuario.nombre && usuario.apellido) {
+        inputNombre.value = usuario.nombre;
+        inputApellido.value = usuario.apellido;
+        inputNombre.setAttribute("readonly", true);
+        inputApellido.setAttribute("readonly", true);
+        misTurnos.classList.remove("d-none");
+    } else {
+        inputNombre.value = "";
+        inputApellido.value = "";
+        inputNombre.removeAttribute("readonly");
+        inputApellido.removeAttribute("readonly");
+        misTurnos.classList.add("d-none");
+    }
+}
+
+
 document.addEventListener("DOMContentLoaded", () => {
+    logueado()
     // ===== Referencias =====
     const selEspecialidad = document.getElementById("selectEspecialidad");
     const selMed = document.getElementById("selectMedico");
@@ -192,13 +215,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const turnos = leerTurnos();
         const medico = buscarMedicoPorId(medicoId);
+        const inputNombre = document.getElementById("nombre")
+        const inputApellido = document.getElementById("apellido")
 
         const nuevo = {
             id: (turnos.map(t => t.id).filter(n => typeof n === "number" && !isNaN(n)).sort((a, b) => b - a)[0] || 0) + 1,
             medicoId,
             fecha,
             hora,
-            cliente: CLIENTE_SIMULADO,
+            nombre: inputNombre.value,
+            apellido: inputApellido.value,
             obraSocialNombre: seleccion.obraSocialNombre || "Particular",
             precioBase: Number(medico.honorarios || medico.valorConsulta || 0),
             precioFinal: seleccion.montoFinal,
@@ -217,14 +243,17 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderMisTurnos() {
         if (!tbodyTablaMisTurnos) return;
 
-        const turnos = leerTurnos()
-            .filter(t => t.cliente === CLIENTE_SIMULADO && t.estado !== "cancelado");
-
+        const usuario = leerUsuarioLogueado();
+        const turnos = usuario
+            ?leerTurnos().filter(t => t.nombre === usuario.nombre && t.apellido === usuario.apellido && t.estado !== "cancelado")
+            :[]
         const medicos = leerMedicos();
 
-        tbodyTablaMisTurnos.innerHTML = turnos.length
-            ? ""
-            : `<tr><td colspan="6" class="text-center">No tenés turnos reservados.</td></tr>`;
+        if(usuario){
+            tbodyTablaMisTurnos.innerHTML = turnos.length
+                ? ""
+                : `<tr><td colspan="6" class="text-center">No tenés turnos reservados.</td></tr>`;
+        }
 
         turnos.forEach(t => {
             const med = medicos.find(m => Number(m.id) === Number(t.medicoId));
@@ -232,7 +261,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const monto = typeof t.precioFinal === "number"
                 ? `$ ${t.precioFinal.toLocaleString("es-AR")}`
                 : "-";
-
+            const btnTurno = t.estado === "cancelada"
+                ? ""
+                : `<button class="btn btn-sm btn-outline-danger" data-cancelar="${t.id}">Cancelar</button>`;
             const tr = document.createElement("tr");
             tr.innerHTML = `
         <td>${t.fecha}</td>
@@ -240,8 +271,9 @@ document.addEventListener("DOMContentLoaded", () => {
         <td>${nombreMed}</td>
         <td>${t.obraSocialNombre || "Particular"}</td>
         <td>${monto}</td>
+        <td>${t.estado}</td>
         <td class="text-end">
-          <button class="btn btn-sm btn-outline-danger" data-cancelar="${t.id}">Cancelar</button>
+          ${btnTurno}
         </td>`;
             tbodyTablaMisTurnos.appendChild(tr);
         });
@@ -249,11 +281,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Delegación para cancelar turnos del usuario
     tbodyTablaMisTurnos?.addEventListener("click", (e) => {
+        const usuario = leerUsuarioLogueado()
         const btn = e.target.closest("button[data-cancelar]");
         if (!btn) return;
         const id = Number(btn.dataset.cancelar);
         const turnos = leerTurnos();
-        const i = turnos.findIndex(t => Number(t.id) === id && t.cliente === CLIENTE_SIMULADO);
+        const i = turnos.findIndex(t => Number(t.id) === id && t.nombre === usuario.nombre && t.apellido === usuario.apellido);
         if (i < 0) return;
 
         if (!confirm("¿Querés cancelar este turno?")) return;
