@@ -62,10 +62,7 @@
         <div class="offcanvas-body">
           <ul class="nav nav-pills flex-column gap-1">
             <li class="nav-item">
-              <a
-                class="nav-link active"
-                href="admin-medicos.html"
-              >
+              <a class="nav-link active" href="admin-medicos.html">
                 <i class="bi bi-person-vcard me-2"></i>Médicos
               </a>
             </li>
@@ -75,26 +72,17 @@
               </a>
             </li>
             <li class="nav-item">
-              <a
-                class="nav-link"
-                href="admin-obras-sociales.html"
-              >
+              <a class="nav-link" href="admin-obras-sociales.html">
                 <i class="bi bi-shield-plus me-2"></i>Obras sociales
               </a>
             </li>
             <li class="nav-item">
-              <a
-                class="nav-link"
-                href="admin-turnos.html"
-              >
+              <a class="nav-link" href="admin-turnos.html">
                 <i class="bi bi-calendar-check me-2"></i>Turnos y reservas
               </a>
             </li>
             <li class="nav-item">
-              <a
-                class="nav-link"
-                href="usuarios.html"
-              >
+              <a class="nav-link" href="usuarios.html">
                 <i class="bi bi-people me-2"></i>Usuarios
               </a>
             </li>
@@ -172,7 +160,9 @@
 
               <div class="card shadow mb-5">
                 <div class="card-header bg-primary text-white">
-                  <h3 id="tituloFormulario" class="m-0">Agregar Nuevo Médico</h3>
+                  <h3 id="tituloFormulario" class="m-0">
+                    Agregar Nuevo Médico
+                  </h3>
                 </div>
                 <div class="card-body">
                   <form id="formMedico">
@@ -224,7 +214,7 @@
                           required
                         />
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <label for="valorConsulta" class="form-label fw-bold"
                           >Valor Consulta ($)</label
                         >
@@ -237,6 +227,15 @@
                           required
                         />
                       </div>
+
+                      <div class="col-md-4">
+                        <label class="form-label fw-bold">Obras Sociales</label>
+                        <div
+                          id="obraSocialContainer"
+                          class="d-flex flex-wrap gap-3"
+                        ></div>
+                      </div>
+
                       <div class="col-md-4">
                         <label for="fotoMedico" class="form-label fw-bold"
                           >Foto del médico</label
@@ -247,13 +246,6 @@
                           id="fotoMedico"
                           accept="image/*"
                         />
-                      </div>
-                      <div class="col-md-6">
-                        <label class="form-label fw-bold">Obras Sociales</label>
-                        <div
-                          id="obraSocialContainer"
-                          class="d-flex flex-column gap-1"
-                        ></div>
                       </div>
 
                       <div class="col-md-9">
