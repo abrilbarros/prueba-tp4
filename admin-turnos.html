@@ -1,271 +1,193 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin · Turnos y Reservas</title>
 
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    />
-    <link rel="stylesheet" href="css/styles.css" />
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin · Turnos y Reservas</title>
 
-  <body class="d-flex flex-column min-vh-100">
-    <div id="contenido" style="display: none;">
-      <!-- Topbar -->
-      <header class="navbar bg-white border-bottom sticky-top">
-        <div class="container-fluid">
-          <a class="navbar-brand fw-semibold m-0" href="admin-medicos.html"
-            >Clínica Vita · Admin</a
-          >
-          <button
-            class="btn btn-outline-secondary d-md-none ms-auto"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#panelMobile"
-            aria-controls="panelMobile"
-            aria-label="Abrir panel"
-          >
-            <i class="bi bi-list me-1"></i> Panel
-          </button>
-        </div>
-      </header>
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
 
-      <!-- Panel mobile (offcanvas) -->
-      <div
-        class="offcanvas offcanvas-start d-md-none"
-        tabindex="-1"
-        id="panelMobile"
-      >
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title">Panel</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="offcanvas"
-          ></button>
-        </div>
-        <div class="offcanvas-body">
-          <ul class="nav nav-pills flex-column gap-1">
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                href="admin-medicos.html"
-                data-bs-dismiss="offcanvas"
-              >
-                <i class="bi bi-person-vcard me-2"></i>Médicos
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="admin-especialidades.html" data-bs-dismiss="offcanvas">
-                <i class="bi bi-hospital me-2"></i>Especialidades
-              </a>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                href="admin-obras-sociales.html"
-                data-bs-dismiss="offcanvas"
-              >
-                <i class="bi bi-shield-plus me-2"></i>Obras sociales
-              </a>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link active"
-                href="admin-turnos.html"
-                data-bs-dismiss="offcanvas"
-              >
-                <i class="bi bi-calendar-check me-2"></i>Turnos y reservas
-              </a>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                href="usuarios.html"
-                data-bs-dismiss="offcanvas"
-              >
-                <i class="bi bi-people me-2"></i>Usuarios
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="index.html" data-bs-dismiss="offcanvas">
-                <i class="bi bi-box-arrow-up-right me-2"></i>Ver sitio
-              </a>
-            </li>
-          </ul>
-        </div>
+<body class="d-flex flex-column min-vh-100">
+  <div id="contenido" style="display: none;">
+    <!-- Topbar -->
+    <header class="navbar bg-white border-bottom sticky-top">
+      <div class="container-fluid">
+        <a class="navbar-brand fw-semibold m-0" href="admin-medicos.html">Clínica Vita · Admin</a>
+        <button class="btn btn-outline-secondary d-md-none ms-auto" type="button" data-bs-toggle="offcanvas"
+          data-bs-target="#panelMobile" aria-controls="panelMobile" aria-label="Abrir panel">
+          <i class="bi bi-list me-1"></i> Panel
+        </button>
       </div>
+    </header>
 
-      <!-- Wrapper -->
-      <div class="flex-grow-1">
-        <div class="container-fluid">
-          <div class="row">
-            <!-- Sidebar desktop -->
-            <nav
-              class="col-12 col-md-3 col-lg-2 d-none d-md-block bg-white border-end p-0"
-            >
-              <div class="sidebar-sticky">
-                <div class="sidebar-scroll px-3 pt-3">
-                  <h6
-                    id="tituloPanel"
-                    class="text-uppercase text-body-secondary mb-3"
-                  >
-                    Panel
-                  </h6>
-                  <ul
-                    class="nav nav-pills flex-column gap-1"
-                    aria-labelledby="tituloPanel"
-                  >
-                    <li class="nav-item">
-                      <a class="nav-link" href="admin-medicos.html">
-                        <i class="bi bi-person-vcard me-2"></i>Médicos
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="admin-especialidades.html">
-                        <i class="bi bi-hospital me-2"></i>Especialidades
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="admin-obras-sociales.html">
-                        <i class="bi bi-shield-plus me-2"></i>Obras sociales
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link active" href="admin-turnos.html">
-                        <i class="bi bi-calendar-check me-2"></i>Turnos y reservas
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="usuarios.html">
-                        <i class="bi bi-people me-2"></i>Usuarios
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="index.html">
-                        <i class="bi bi-box-arrow-up-right me-2"></i>Ver sitio
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </nav>
-
-            <!-- Contenido -->
-            <main class="col-12 col-md-9 col-lg-10 p-3">
-              <h1 class="h3">Turnos y Reservas</h1>
-
-              <!-- Filtro solo por médico -->
-              <div class="row g-2 mb-3">
-                <div class="col-md-6">
-                  <label class="form-label">Médico</label>
-                  <select id="filtroMedico" class="form-select"></select>
-                </div>
-              </div>
-
-              <!-- Carga de horarios disponibles -->
-              <section class="border rounded p-3 mb-3">
-                <h2 class="h5">Cargar horarios disponibles</h2>
-                <form id="formAgenda" class="row g-2">
-                  <div class="col-md-4">
-                    <label class="form-label">Médico</label>
-                    <select
-                      id="agendaMedico"
-                      class="form-select"
-                      required
-                    ></select>
-                  </div>
-                  <div class="col-md-4">
-                    <label class="form-label">Fecha</label>
-                    <input
-                      id="agendaFecha"
-                      type="date"
-                      class="form-control"
-                      required
-                    />
-                  </div>
-                  <div class="col-md-4">
-                    <label class="form-label">Horas (Ctrl para varias)</label>
-                    <select
-                      id="agendaHoras"
-                      class="form-select"
-                      multiple
-                      size="10"
-                    >
-                      <!-- si tu JS genera la lista, podés dejar vacío -->
-                      <option>08:00</option>
-                      <option>08:30</option>
-                      <option>09:00</option>
-                      <option>09:30</option>
-                      <option>10:00</option>
-                      <option>10:30</option>
-                      <option>11:00</option>
-                      <option>11:30</option>
-                      <option>12:00</option>
-                      <option>12:30</option>
-                      <option>14:00</option>
-                      <option>14:30</option>
-                      <option>15:00</option>
-                      <option>15:30</option>
-                      <option>16:00</option>
-                      <option>16:30</option>
-                      <option>17:00</option>
-                    </select>
-                  </div>
-                  <div class="col-12 text-end">
-                    <button class="btn btn-success">Guardar horarios</button>
-                  </div>
-                </form>
-
-                <div class="mt-3">
-                  <strong>Horas cargadas para esa fecha:</strong>
-                  <div
-                    id="listaHorasCargadas"
-                    class="d-flex flex-wrap gap-2 mt-2"
-                  ></div>
-                </div>
-              </section>
-
-              <!-- Reservas -->
-              <div class="table-responsive">
-                <table class="table table-striped align-middle">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Fecha</th>
-                      <th>Hora</th>
-                      <th>Médico</th>
-                      <th>Cliente</th>
-                      <th>Obra Social</th>
-                      <th>Monto</th>
-                      <th>Estado</th>
-                      <th class="text-end">Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody id="tablaTurnos"></tbody>
-                </table>
-              </div>
-            </main>
-          </div>
-        </div>
+    <!-- Panel mobile (offcanvas) -->
+    <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="panelMobile">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Panel</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
       </div>
-
-      <!-- Footer-->
-      <footer
-        class="mt-auto border-top py-3 text-center text-body-tertiary small"
-      >
-        <div class="container-fluid">
-          v1.0 · Proyecto académico (entrega final)
-        </div>
-      </footer>
-
-      <script src="js/bootstrap.bundle.min.js" defer></script>
-      <script type="module" src="js/init.js" defer></script>
-      <script src="js/admin-turnos.js" type="module" defer></script>
+      <div class="offcanvas-body">
+        <ul class="nav nav-pills flex-column gap-1">
+          <li class="nav-item">
+            <a class="nav-link" href="admin-medicos.html">
+              <i class="bi bi-person-vcard me-2"></i>Médicos
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="admin-especialidades.html">
+              <i class="bi bi-hospital me-2"></i>Especialidades
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="admin-obras-sociales.html">
+              <i class="bi bi-shield-plus me-2"></i>Obras sociales
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="admin-turnos.html">
+              <i class="bi bi-calendar-check me-2"></i>Turnos y reservas
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="usuarios.html">
+              <i class="bi bi-people me-2"></i>Usuarios
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">
+              <i class="bi bi-box-arrow-up-right me-2"></i>Ver sitio
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
-  </body>
+
+    <!-- Wrapper -->
+    <div class="flex-grow-1">
+      <div class="container-fluid">
+        <div class="row">
+          <!-- Sidebar desktop -->
+          <nav class="col-12 col-md-3 col-lg-2 d-none d-md-block bg-white border-end p-0">
+            <div class="sidebar-sticky">
+              <div class="sidebar-scroll px-3 pt-3">
+                <h6 id="tituloPanel" class="text-uppercase text-body-secondary mb-3">
+                  Panel
+                </h6>
+                <ul class="nav nav-pills flex-column gap-1" aria-labelledby="tituloPanel">
+                  <li class="nav-item">
+                    <a class="nav-link" href="admin-medicos.html">
+                      <i class="bi bi-person-vcard me-2"></i>Médicos
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="admin-especialidades.html">
+                      <i class="bi bi-hospital me-2"></i>Especialidades
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="admin-obras-sociales.html">
+                      <i class="bi bi-shield-plus me-2"></i>Obras sociales
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" href="admin-turnos.html">
+                      <i class="bi bi-calendar-check me-2"></i>Turnos y reservas
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="usuarios.html">
+                      <i class="bi bi-people me-2"></i>Usuarios
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="index.html">
+                      <i class="bi bi-box-arrow-up-right me-2"></i>Ver sitio
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+
+          <!-- Contenido -->
+          <main class="col-12 col-md-9 col-lg-10 p-3">
+            <h1 class="h3">Turnos y Reservas</h1>
+
+            <!-- Filtro solo por médico -->
+            <div class="row g-2 mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Médico</label>
+                <select id="filtroMedico" class="form-select"></select>
+              </div>
+            </div>
+
+            <!-- Carga de horarios disponibles -->
+            <section class="border rounded p-3 mb-3">
+              <h2 class="h5">Cargar horarios disponibles</h2>
+              <form id="formAgenda" class="row g-2">
+                <div class="col-md-4">
+                  <label class="form-label">Médico</label>
+                  <select id="agendaMedico" class="form-select" required></select>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Fecha</label>
+                  <input id="agendaFecha" type="date" class="form-control" required />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Horas (Ctrl para varias)</label>
+                  <select id="agendaHoras" class="form-select" multiple size="10"></select>
+
+                </div>
+                <div class="col-12 text-end">
+                  <button class="btn btn-success">Guardar horarios</button>
+                </div>
+              </form>
+
+              <div class="mt-3">
+                <strong>Horas cargadas para esa fecha:</strong>
+                <div id="listaHorasCargadas" class="d-flex flex-wrap gap-2 mt-2"></div>
+              </div>
+            </section>
+
+            <!-- Reservas -->
+            <div class="table-responsive">
+              <table class="table table-striped align-middle">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Médico</th>
+                    <th>Paciente</th>
+                    <th>Obra Social</th>
+                    <th>Monto</th>
+                    <th>Estado</th>
+                    <th class="text-end">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="tablaTurnos"></tbody>
+              </table>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer-->
+    <footer class="mt-auto border-top py-3 text-center text-body-tertiary small">
+      <div class="container-fluid">
+        v1.0 · Proyecto académico (entrega final)
+      </div>
+    </footer>
+
+    <script src="js/bootstrap.bundle.min.js" defer></script>
+    <script type="module" src="js/init.js" defer></script>
+    <script src="js/admin-turnos.js" type="module" defer></script>
+  </div>
+</body>
+
 </html>

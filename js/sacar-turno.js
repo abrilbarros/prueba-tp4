@@ -1,5 +1,5 @@
 // ===== Configuración de la simulación =====
-const CLIENTE_SIMULADO = "Avery Pascal";
+const CLIENTE_SIMULADO = "Avery Perez";
 
 // ===== Helpers de almacenamiento =====
 function leerEspecialidades() {
@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
             obraSocialNombre: seleccion.obraSocialNombre || "Particular",
             precioBase: Number(medico.honorarios || medico.valorConsulta || 0),
             precioFinal: seleccion.montoFinal,
-            estado: "confirmada"
+            estado: "confirmado"
         };
         turnos.push(nuevo);
         guardarTurnos(turnos);
@@ -213,12 +213,12 @@ document.addEventListener("DOMContentLoaded", () => {
         renderMisTurnos();   // actualiza la tabla del usuario
     });
 
-    // ===== "Mis turnos" (Avery Pascal) =====
+    // ===== "Mis turnos" (Avery Perez) =====
     function renderMisTurnos() {
         if (!tbodyTablaMisTurnos) return;
 
         const turnos = leerTurnos()
-            .filter(t => t.cliente === CLIENTE_SIMULADO && t.estado !== "cancelada");
+            .filter(t => t.cliente === CLIENTE_SIMULADO && t.estado !== "cancelado");
 
         const medicos = leerMedicos();
 

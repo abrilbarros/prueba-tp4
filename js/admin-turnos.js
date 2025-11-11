@@ -1,5 +1,6 @@
 import { restringir } from "./herramientas.js";
 restringir();
+
 // =============== Helpers de LocalStorage ===============
 function leerMedicos() {
     try { return JSON.parse(localStorage.getItem("medicos")) || []; }
@@ -47,12 +48,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const cuerpoTabla = document.getElementById("tablaTurnos");
 
     // =============== Cargar opciones de horas (multi) ===============
-    function cargarListaHoras() {
+    function cargarListaHoras(horasGuardadas = []) {
         selAgendaHoras.innerHTML = "";
-        HORAS_MEDIA.forEach(h => {
+        const setGuardadas = new Set(horasGuardadas);
+        HORAS_MEDIA.forEach(hora => {
             const op = document.createElement("option");
-            op.value = h;
-            op.textContent = h;
+            op.value = hora;
+            op.textContent = hora;
+            if (setGuardadas.has(hora)) op.selected = true; // marca las ya guardadas (si las hay)
             selAgendaHoras.appendChild(op);
         });
     }
@@ -86,15 +89,17 @@ document.addEventListener("DOMContentLoaded", () => {
         return item?.horas || [];
     }
 
-    function upsertAgenda(medicoId, fecha, horasSeleccionadas) {
+    function actualizarHorasAgenda(medicoId, fecha, horasSeleccionadas) {
         const agenda = leerAgenda();
-        const idx = agenda.findIndex(x => Number(x.medicoId) === Number(medicoId) && x.fecha === fecha);
-        const horasUnicas = Array.from(new Set(horasSeleccionadas)).sort();
+        const indiceAgenda = agenda.findIndex(
+            x => Number(x.medicoId) === Number(medicoId) && x.fecha === fecha
+        );
+        const listaHoras = Array.from(new Set(horasSeleccionadas)).sort(); // sin duplicados, ordenadas
 
-        if (idx >= 0) {
-            agenda[idx].horas = horasUnicas;
+        if (indiceAgenda >= 0) {
+            agenda[indiceAgenda].horas = listaHoras;
         } else {
-            agenda.push({ medicoId: Number(medicoId), fecha, horas: horasUnicas });
+            agenda.push({ medicoId: Number(medicoId), fecha, horas: listaHoras });
         }
         guardarAgenda(agenda);
     }
@@ -103,18 +108,26 @@ document.addEventListener("DOMContentLoaded", () => {
         divHorasCargadas.innerHTML = "";
         const medicoId = selAgendaMedico.value;
         const fecha = inpAgendaFecha.value;
-        if (!medicoId || !fecha) return;
 
-        const horas = obtenerHorasDeAgenda(medicoId, fecha);
-        if (!horas.length) {
+        if (!medicoId || !fecha) {
+            cargarListaHoras([]);
+            return;
+        }
+
+        const horasGuardadas = obtenerHorasDeAgenda(medicoId, fecha);
+
+        // refresca el select y marca lo ya guardado
+        cargarListaHoras(horasGuardadas);
+
+        if (!horasGuardadas.length) {
             divHorasCargadas.innerHTML = `<span class="text-body-secondary">No hay horas cargadas.</span>`;
             return;
         }
 
-        horas.forEach(h => {
+        horasGuardadas.forEach(hora => {
             const badge = document.createElement("span");
             badge.className = "badge text-bg-light border";
-            badge.textContent = h;
+            badge.textContent = hora;
             divHorasCargadas.appendChild(badge);
         });
     }
@@ -135,18 +148,17 @@ document.addEventListener("DOMContentLoaded", () => {
             const tr = document.createElement("tr");
             const nombreMed = nombreMedicoPorId(t.medicoId);
             const monto = typeof t.precioFinal === "number" ? `$ ${t.precioFinal.toLocaleString("es-AR")}` : "-";
-            const estado = t.estado || "confirmada";
+            const estado = t.estado || "confirmado";
 
             const acciones = [];
-            // Mostrar "Atendido" solo si NO está cancelada
-            if (estado !== "cancelada") {
+            if (estado === "confirmado") {
                 acciones.push(
                     `<button class="btn btn-outline-success btn-sm me-1" data-accion="atendido" data-id="${t.id}">Atendido</button>`
                 );
+                acciones.push(
+                    `<button class="btn btn-danger btn-sm" data-accion="cancelar" data-id="${t.id}">Cancelar</button>`
+                );
             }
-            acciones.push(
-                `<button class="btn btn-danger btn-sm" data-accion="cancelar" data-id="${t.id}">Cancelar</button>`
-            );
 
             tr.innerHTML = `
         <td>${t.id}</td>
@@ -172,19 +184,18 @@ document.addEventListener("DOMContentLoaded", () => {
         const accion = btn.dataset.accion;
 
         const turnos = leerTurnos();
-        const idx = turnos.findIndex(t => Number(t.id) === id);
-        if (idx < 0) return;
+        const indiceTurno = turnos.findIndex(t => Number(t.id) === id);
+        if (indiceTurno < 0) return;
 
         if (accion === "cancelar") {
             if (confirm("¿Cancelar este turno?")) {
-                turnos[idx].estado = "cancelada";
+                turnos[indiceTurno].estado = "cancelado";
             }
         }
 
         if (accion === "atendido") {
-            // Solo permitir si no está cancelada
-            if (turnos[idx].estado !== "cancelada") {
-                turnos[idx].estado = "atendida";
+            if (turnos[indiceTurno].estado !== "cancelado") {
+                turnos[indiceTurno].estado = "atendido";
             }
         }
 
@@ -214,7 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        upsertAgenda(medicoId, fecha, horasSeleccionadas);
+        actualizarHorasAgenda(medicoId, fecha, horasSeleccionadas);
         mostrarHorasDeAgenda();
         alert("Horarios guardados.");
     });
