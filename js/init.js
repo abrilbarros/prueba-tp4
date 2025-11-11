@@ -1,4 +1,3 @@
-// init.js
 import {
     MEDICOS_SEED,
     ESPECIALIDADES_SEED,

@@ -85,7 +85,7 @@ export const TURNOS_SEED = [
     {
         id: 1,
         medicoId: 1,
-        fecha: "2025-11-16",
+        fecha: "2025-11-15",
         hora: "10:00",
         cliente: "Ava Taylor",
         obraSocialNombre: "OSDE", // 80% cobertura
@@ -96,7 +96,7 @@ export const TURNOS_SEED = [
     {
         id: 2,
         medicoId: 2,
-        fecha: "2025-11-16",
+        fecha: "2025-11-15",
         hora: "14:30",
         cliente: "Liam Garcia",
         obraSocialNombre: "Swiss Medical", // 75% cobertura
@@ -107,7 +107,7 @@ export const TURNOS_SEED = [
     {
         id: 3,
         medicoId: 3,
-        fecha: "2025-11-15",
+        fecha: "2025-11-16",
         hora: "09:00",
         cliente: "Noah Hernandez",
         obraSocialNombre: "OMINT", // 85% cobertura
@@ -118,7 +118,7 @@ export const TURNOS_SEED = [
     {
         id: 4,
         medicoId: 4,
-        fecha: "2025-11-15",
+        fecha: "2025-11-16",
         hora: "10:30",
         cliente: "Evelyn Gonzalez",
         obraSocialNombre: "PAMI", // 90% cobertura
