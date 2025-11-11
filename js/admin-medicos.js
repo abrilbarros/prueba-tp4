@@ -1,7 +1,11 @@
+
+// ==================== IMPORTS Y CONFIGURACIÓN ====================
+
 import { restringir } from "./herramientas.js";
 restringir();
 const STORAGE_KEY = "medicos";
-// ==================== PERSISTENCIA ====================
+
+// ==================== FUNCIONES DE PERSISTENCIA ====================
 
 function obtenerMedicos() {
     return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
@@ -20,7 +24,7 @@ function convertirImagenABase64(file) {
     });
 }
 
-// ==================== CRUD ====================
+// ==================== FUNCIONES CRUD ====================
 
 async function guardarMedico() {
     const id = medicoIdInput.value;
@@ -134,9 +138,9 @@ function editarMedico(id) {
     nombreInput.value = partes.join(" ");
     matriculaInput.value = medico.matricula;
     especialidadInput.value = medico.especialidad;
-    // Limpiar todos los checkboxes
-    document.querySelectorAll("#obraSocialContainer input[type=checkbox]").forEach(cb => {
-        cb.checked = medico.obrasSociales?.includes(cb.value) || false;
+
+    document.querySelectorAll("#obraSocialContainer input[type=checkbox]").forEach(cbox => {
+        cbox.checked = medico.obrasSociales?.includes(cbox.value) || false;
     });
 
     valorConsultaInput.value = medico.honorarios;
@@ -146,6 +150,9 @@ function editarMedico(id) {
     tituloFormulario.textContent = "Editar Médico";
     btnGuardarMedico.textContent = "Actualizar Médico";
     btnCancelarEdicion.style.display = "inline-block";
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
 }
 
 function limpiarFormulario() {
@@ -165,7 +172,7 @@ function cargarMedicos() {
         ? medicos
             .map(
                 (m) => `
-      <tr>
+    <tr>
         <td><img src="${m.foto}" alt="${m.apellidoNombre}" class="rounded" style="width:50px;height:50px;object-fit:cover;"></td>
         <td>${m.id}</td>
         <td>${m.apellidoNombre}</td>
@@ -174,21 +181,40 @@ function cargarMedicos() {
         <td>${m.obrasSociales?.join(", ") || "N/A"}</td>
         <td>$${m.honorarios.toLocaleString("es-AR")}</td>
         <td class="text-end">
-          <button class="btn btn-warning btn-sm me-1" onclick="editarMedico(${m.id})"><i class="bi bi-pencil"></i></button>
-          <button class="btn btn-danger btn-sm" onclick="eliminarMedico(${m.id})"><i class="bi bi-trash"></i></button>
+            <button class="btn btn-warning btn-sm me-1" onclick="editarMedico(${m.id})" title="Editar"><i class="bi bi-pencil"></i></button>
+            <button class="btn btn-danger btn-sm me-1" onclick="eliminarMedico(${m.id})" title="Eliminar"><i class="bi bi-trash"></i></button>
         </td>
-      </tr>`
+    </tr>`
             )
             .join("")
         : `<tr><td colspan="8" class="text-center">No hay médicos registrados.</td></tr>`;
 }
 
-// ==================== INICIALIZACIÓN ====================
+// ==================== VARIABLES GLOBALES ====================
 
 let formMedico, medicoIdInput, matriculaInput, nombreInput, apellidoInput;
 let especialidadInput, obraSocialInput, valorConsultaInput, descripcionInput;
 let btnGuardarMedico, btnCancelarEdicion, tituloFormulario;
 let fotoMedicoInput;
+
+
+// ==================== DATOS DE OBRAS SOCIALES ====================
+
+const obrasSocialesDelStorage = JSON.parse(localStorage.getItem("obrasSociales")) || [];
+
+const obrasSocialesDisponibles = obrasSocialesDelStorage.length > 0
+    ? obrasSocialesDelStorage
+    : [
+        { id: 1, nombre: "OSDE" },
+        { id: 2, nombre: "Swiss Medical" },
+        { id: 3, nombre: "Galeno" },
+        { id: 4, nombre: "Medifé" },
+        { id: 5, nombre: "PAMI" },
+        { id: 6, nombre: "OMINT" }
+    ];
+
+
+// ==================== INICIALIZACIÓN DEL DOM ====================
 
 document.addEventListener("DOMContentLoaded", () => {
     formMedico = document.getElementById("formMedico");
@@ -204,7 +230,8 @@ document.addEventListener("DOMContentLoaded", () => {
     btnGuardarMedico = document.getElementById("btnGuardarMedico");
     btnCancelarEdicion = document.getElementById("btnCancelarEdicion");
     tituloFormulario = document.getElementById("tituloFormulario");
-    // Crear checkboxes dinámicamente
+
+
     const obraSocialContainer = document.getElementById("obraSocialContainer");
 
     obrasSocialesDisponibles.forEach(os => {
@@ -214,13 +241,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const input = document.createElement("input");
         input.type = "checkbox";
         input.classList.add("form-check-input");
-        input.id = `obraSocial-${os}`;
-        input.value = os;
+        input.id = `obraSocial-${os.id}`;
+        input.value = os.nombre;
 
         const label = document.createElement("label");
         label.classList.add("form-check-label");
-        label.htmlFor = `obraSocial-${os}`;
-        label.textContent = os;
+        label.htmlFor = input.id;
+        label.textContent = os.nombre;
 
         div.appendChild(input);
         div.appendChild(label);
@@ -238,18 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarMedicos();
 });
 
-
-const obrasSocialesDisponibles = [
-    "OSDE",
-    "Swiss Medical",
-    "Galeno",
-    "Medicorp",
-    "PAMI"
-];
-
-
-
-
+// ==================== FUNCIONES GLOBALES PARA BOTONES ====================
 
 window.eliminarMedico = eliminarMedico;
 window.editarMedico = editarMedico;
