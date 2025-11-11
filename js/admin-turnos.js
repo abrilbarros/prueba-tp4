@@ -135,18 +135,21 @@ document.addEventListener("DOMContentLoaded", () => {
             const tr = document.createElement("tr");
             const nombreMed = nombreMedicoPorId(t.medicoId);
             const monto = typeof t.precioFinal === "number" ? `$ ${t.precioFinal.toLocaleString("es-AR")}` : "-";
-            const estado = t.estado || "confirmada";
+            const estado = t.estado || "confirmado";
 
             const acciones = [];
-            // Mostrar "Atendido" solo si NO está cancelada
-            if (estado !== "cancelada") {
+            // Mostrar "Atendido" solo si NO está cancelado ni ya atendido
+            if (estado !== "cancelado" && estado !== "atendido") {
                 acciones.push(
                     `<button class="btn btn-outline-success btn-sm me-1" data-accion="atendido" data-id="${t.id}">Atendido</button>`
                 );
             }
-            acciones.push(
-                `<button class="btn btn-danger btn-sm" data-accion="cancelar" data-id="${t.id}">Cancelar</button>`
-            );
+            // Mostrar "Cancelar" solo si NO está cancelado
+            if (estado !== "cancelado") {
+                acciones.push(
+                    `<button class="btn btn-danger btn-sm" data-accion="cancelar" data-id="${t.id}">Cancelar</button>`
+                );
+            }
 
             tr.innerHTML = `
         <td>${t.id}</td>
@@ -177,14 +180,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (accion === "cancelar") {
             if (confirm("¿Cancelar este turno?")) {
-                turnos[idx].estado = "cancelada";
+                turnos[idx].estado = "cancelado";
             }
         }
 
         if (accion === "atendido") {
-            // Solo permitir si no está cancelada
-            if (turnos[idx].estado !== "cancelada") {
-                turnos[idx].estado = "atendida";
+            // Solo permitir si no está cancelado
+            if (turnos[idx].estado !== "cancelado") {
+                turnos[idx].estado = "atendido";
             }
         }
 

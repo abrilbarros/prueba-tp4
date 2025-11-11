@@ -74,22 +74,56 @@ export const MEDICOS_SEED = [
 
 // Agenda (horarios disponibles por médico y fecha)
 export const AGENDA_SEED = [
-    { medicoId: 1, fecha: "2025-11-12", horas: ["09:00", "09:30", "10:00", "10:30", "11:00"] },
-    { medicoId: 2, fecha: "2025-11-12", horas: ["14:00", "14:30", "15:00", "15:30"] },
-    { medicoId: 3, fecha: "2025-11-13", horas: ["08:00", "08:30", "09:00"] }
+    { medicoId: 1, fecha: "2025-11-15", horas: ["09:00", "09:30", "10:00", "10:30", "11:00"] },
+    { medicoId: 2, fecha: "2025-11-15", horas: ["14:00", "14:30", "15:00", "15:30"] },
+    { medicoId: 3, fecha: "2025-11-16", horas: ["08:00", "08:30", "09:00", "09:30"] },
+    { medicoId: 4, fecha: "2025-11-16", horas: ["09:30", "10:00", "10:30", "11:00"] }
 ];
 
-// Turnos (uno ocupado de ejemplo)
+// Turnos (uno por médico)
 export const TURNOS_SEED = [
     {
         id: 1,
         medicoId: 1,
-        fecha: "2025-11-12",
-        hora: "09:30",
-        cliente: "Ejemplo",
-        obraSocialNombre: "OSDE",
+        fecha: "2025-11-16",
+        hora: "10:00",
+        cliente: "Ava Taylor",
+        obraSocialNombre: "OSDE", // 80% cobertura
         precioBase: 28000,
-        precioFinal: 5600,
-        estado: "confirmada"
+        precioFinal: 5600, // 20% del valor
+        estado: "confirmado"
+    },
+    {
+        id: 2,
+        medicoId: 2,
+        fecha: "2025-11-16",
+        hora: "14:30",
+        cliente: "Liam Garcia",
+        obraSocialNombre: "Swiss Medical", // 75% cobertura
+        precioBase: 30000,
+        precioFinal: 7500, // 25% del valor
+        estado: "confirmado"
+    },
+    {
+        id: 3,
+        medicoId: 3,
+        fecha: "2025-11-15",
+        hora: "09:00",
+        cliente: "Noah Hernandez",
+        obraSocialNombre: "OMINT", // 85% cobertura
+        precioBase: 38000,
+        precioFinal: 5700, // 15% del valor
+        estado: "confirmado"
+    },
+    {
+        id: 4,
+        medicoId: 4,
+        fecha: "2025-11-15",
+        hora: "10:30",
+        cliente: "Evelyn Gonzalez",
+        obraSocialNombre: "PAMI", // 90% cobertura
+        precioBase: 29500,
+        precioFinal: 2950, // 10% del valor
+        estado: "confirmado"
     }
 ];
