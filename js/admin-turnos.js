@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <td>${t.fecha}</td>
         <td>${t.hora}</td>
         <td>${nombreMed}</td>
-        <td>${t.cliente || "-"}</td>
+        <td>${`${t.nombre}<br>${t.apellido}` || "-"}</td>
         <td>${t.obraSocialNombre || "Particular"}</td>
         <td>${monto}</td>
         <td>${estado}</td>

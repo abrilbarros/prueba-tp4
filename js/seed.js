@@ -87,7 +87,8 @@ export const TURNOS_SEED = [
         medicoId: 1,
         fecha: "2025-11-15",
         hora: "10:00",
-        cliente: "Ava Taylor",
+        nombre: "Ava",
+        apellido: "Taylor",
         obraSocialNombre: "OSDE", // 80% cobertura
         precioBase: 28000,
         precioFinal: 5600, // 20% del valor
@@ -98,7 +99,8 @@ export const TURNOS_SEED = [
         medicoId: 2,
         fecha: "2025-11-15",
         hora: "14:30",
-        cliente: "Liam Garcia",
+        nombre: "Liam",
+        apellido: "Garcia",
         obraSocialNombre: "Swiss Medical", // 75% cobertura
         precioBase: 30000,
         precioFinal: 7500, // 25% del valor
@@ -109,21 +111,11 @@ export const TURNOS_SEED = [
         medicoId: 3,
         fecha: "2025-11-16",
         hora: "09:00",
-        cliente: "Noah Hernandez",
+        nombre: "Noah",
+        apellido: "Hernandez",
         obraSocialNombre: "OMINT", // 85% cobertura
         precioBase: 38000,
         precioFinal: 5700, // 15% del valor
         estado: "confirmado"
     },
-    {
-        id: 4,
-        medicoId: 4,
-        fecha: "2025-11-16",
-        hora: "10:30",
-        cliente: "Evelyn Gonzalez",
-        obraSocialNombre: "PAMI", // 90% cobertura
-        precioBase: 29500,
-        precioFinal: 2950, // 10% del valor
-        estado: "confirmado"
-    }
 ];

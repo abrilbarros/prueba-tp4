@@ -49,6 +49,7 @@
         <li class="nav-item">
           <a class="nav-link active fw-semibold text-success" href="index.html" aria-current="page">Home</a>
         </li>
+        <li id="turnosDesk" class="nav-item"><a class="nav-link text-primary" href="sacar-turno.html">Turnos</a></li>
         <li class="nav-item"><a class="nav-link text-primary" href="institucional.html">Institucional</a>
         </li>
         <li class="nav-item"><a class="nav-link text-primary" href="contacto.html">Contacto</a></li>
@@ -98,13 +99,12 @@
         <li class="nav-item">
           <a class="nav-link active fw-semibold text-success" href="index.html" aria-current="page">Home</a>
         </li>
+        <li id="btnTurnosMob" class="nav-item"><a class="nav-link text-primary" href="sacar-turno.html">Turnos</a></li>
         <li class="nav-item"><a class="nav-link text-primary" href="institucional.html">Institucional</a></li>
         <li class="nav-item"><a class="nav-link text-primary" href="contacto.html">Contacto</a></li>
         <li class="nav-item"><a class="nav-link text-primary" href="faq.html">FAQ</a></li>
         <li id="adminMedMob" class="nav-item d-none"><a class="nav-link text-primary" href="admin-medicos.html">Panel
             Admin</a></li>
-        <li id="btnTurnosMob" class="nav-item d-none"><a class="nav-link text-primary"
-            href="sacar-turno.html">Turnos</a></li>
         <li class="nav-item d-flex justify-content-center" id="btnInicioMob">
           <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginModal">
             Iniciar sesión
@@ -318,6 +318,10 @@
 
             <div class="modal-footer">
               <button type="submit" class="btn btn-primary" id="btnLogin">Ingresar</button>
+              <button class="btn btn-primary d-none" type="button" id="btnLoad" disabled>
+                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                <span role="status">Ingresando...</span>
+              </button>
             </div>
           </form>
         </div>
