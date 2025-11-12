@@ -177,6 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const btn = document.createElement("button");
             btn.className = `btn w-100 mb-2 ${ocupado ? "btn-outline-secondary" : "btn-success"}`;
             btn.textContent = hhmm;
+            btn.type = "button"
             btn.disabled = ocupado;
             if (!ocupado) btn.addEventListener("click", () => elegirHora(hhmm));
 
@@ -251,7 +252,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ===== Confirmación de turno =====
-    btnConfirmar?.addEventListener("click", () => {
+    const formTurno = document.getElementById("formTurno")
+    formTurno.addEventListener("submit", () => {
         const { medicoId, fecha, hora } = seleccion;
         if (!medicoId || !fecha || !hora) { alert("Completá los datos del turno."); return; }
         if (estaOcupado(medicoId, fecha, hora)) { alert("Ese horario ya no está disponible."); renderHoras(); return; }
