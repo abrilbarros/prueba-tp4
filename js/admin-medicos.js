@@ -3,17 +3,30 @@
 
 import { restringir } from "./herramientas.js";
 restringir();
-const STORAGE_KEY = "medicos";
 
-// ==================== FUNCIONES DE PERSISTENCIA ====================
+import { ESPECIALIDADES_SEED, OBRAS_SOCIALES_SEED } from "./seed.js";
 
-function obtenerMedicos() {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+// ==================== FUNCIONES AUXILIARES DE STORAGE ====================
+
+// Lee un array desde localStorage
+function leerDesdeStorage(clave) {
+    try {
+        return JSON.parse(localStorage.getItem(clave)) || [];
+    } catch {
+        return [];
+    }
 }
 
-function guardarMedicosEnStorage(lista) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
+// Guarda datos en localStorage
+function guardarEnStorage(clave, datos) {
+    localStorage.setItem(clave, JSON.stringify(datos || []));
 }
+
+
+// ==================== INICIALIZACIÓN DE DATOS ====================
+
+let medicos = leerDesdeStorage("medicos");
 
 function convertirImagenABase64(file) {
     return new Promise((resolve, reject) => {
@@ -76,11 +89,8 @@ async function guardarMedico() {
 }
 
 function agregarMedico(medicoData) {
-    let medicos = obtenerMedicos();
 
-    const idsExistentes = medicos
-        .map(m => m.id)
-        .filter(n => typeof n === "number" && !isNaN(n));
+    const idsExistentes = medicos.map(m => m.id).filter(n => typeof n === "number" && !isNaN(n));
 
     const nuevoId = idsExistentes.length > 0 ? Math.max(...idsExistentes) + 1 : 1;
     medicoData.id = nuevoId;
@@ -90,7 +100,7 @@ function agregarMedico(medicoData) {
     }
 
     medicos.push(medicoData);
-    guardarMedicosEnStorage(medicos);
+    guardarEnStorage("medicos", medicos);
     cargarMedicos();
     limpiarFormulario();
     alert("Médico agregado con éxito");
@@ -98,7 +108,6 @@ function agregarMedico(medicoData) {
 
 
 function editarMedicoExistente(id, medicoData) {
-    let medicos = obtenerMedicos();
     const medicoIndex = medicos.findIndex(med => med.id == id);
 
     if (medicoIndex === -1) return;
@@ -109,7 +118,7 @@ function editarMedicoExistente(id, medicoData) {
 
     medicos[medicoIndex] = { ...medicos[medicoIndex], ...medicoData };
 
-    guardarMedicosEnStorage(medicos);
+    guardarEnStorage("medicos", medicos);
     cargarMedicos();
     limpiarFormulario();
     alert("Médico modificado con éxito");
@@ -117,20 +126,19 @@ function editarMedicoExistente(id, medicoData) {
 
 
 function eliminarMedico(id) {
-    const medicos = obtenerMedicos();
     const medico = medicos.find((m) => m.id === id);
     if (!medico) return;
 
     if (confirm(`¿Eliminar al Dr./Dra. ${medico.apellidoNombre}?`)) {
-        const actualizados = medicos.filter((m) => m.id !== id);
-        guardarMedicosEnStorage(actualizados);
+        medicos = medicos.filter((m) => m.id !== id);
+        guardarEnStorage("medicos", medicos);         
         cargarMedicos();
         alert("Médico eliminado.");
     }
 }
 
 function editarMedico(id) {
-    const medico = obtenerMedicos().find((m) => m.id === id);
+    const medico = medicos.find((m) => m.id === id);
     if (!medico) return;
 
     const partes = medico.apellidoNombre.split(" ");
@@ -166,12 +174,8 @@ function limpiarFormulario() {
 
 function cargarMedicos() {
     const tbody = document.querySelector("#tablaMedicos tbody");
-    const medicos = obtenerMedicos();
 
-    tbody.innerHTML = medicos.length
-        ? medicos
-            .map(
-                (m) => `
+    tbody.innerHTML = medicos.length > 0 ? medicos.map((m) => `
     <tr>
         <td><img src="${m.foto}" alt="${m.apellidoNombre}" class="rounded" style="width:50px;height:50px;object-fit:cover;"></td>
         <td>${m.id}</td>
@@ -199,34 +203,17 @@ let fotoMedicoInput;
 
 // ==================== DATOS DE ESPECIALIDADES ====================
 
-const especialidadesDelStorage = JSON.parse(localStorage.getItem("especialidades")) || [];
+const especialidadesDelStorage = leerDesdeStorage("especialidades");
 
-const especialidadesDisponibles = especialidadesDelStorage.length > 0 ? especialidadesDelStorage : [
-    { id: 1, nombre: "Clínica Médica" },
-    { id: 2, nombre: "Pediatría" },
-    { id: 3, nombre: "Cirugía General" },
-    { id: 4, nombre: "Cardiología" },
-    { id: 5, nombre: "Dermatologia" },
-    { id: 6, nombre: "Traumatologia" },
-    { id: 7, nombre: "Ginecología y Obstetricia" },
-    { id: 8, nombre: "Neurología" }
-];
+const especialidadesDisponibles = especialidadesDelStorage.length > 0 ? especialidadesDelStorage : ESPECIALIDADES_SEED
 
 // ==================== DATOS DE OBRAS SOCIALES ====================
 
-const obrasSocialesDelStorage = JSON.parse(localStorage.getItem("obrasSociales")) || [];
+const obrasSocialesDelStorage = leerDesdeStorage("obrasSociales");
 
 const obrasSocialesDisponibles = obrasSocialesDelStorage.length > 0
     ? obrasSocialesDelStorage
-    : [
-        { id: 1, nombre: "OSDE" },
-        { id: 2, nombre: "Swiss Medical" },
-        { id: 3, nombre: "Galeno" },
-        { id: 4, nombre: "Medifé" },
-        { id: 5, nombre: "PAMI" },
-        { id: 6, nombre: "OMINT" }
-    ];
-
+    : OBRAS_SOCIALES_SEED;
 
 // ==================== INICIALIZACIÓN DEL DOM ====================
 
@@ -244,6 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btnGuardarMedico = document.getElementById("btnGuardarMedico");
     btnCancelarEdicion = document.getElementById("btnCancelarEdicion");
     tituloFormulario = document.getElementById("tituloFormulario");
+
 
     especialidadesDisponibles.forEach(esp => {
         const option = document.createElement("option");
@@ -273,7 +261,6 @@ document.addEventListener("DOMContentLoaded", () => {
         div.appendChild(input);
         div.appendChild(label);
         obraSocialContainer.appendChild(div);
-
 
     });
 
