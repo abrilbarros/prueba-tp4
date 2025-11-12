@@ -7,13 +7,14 @@ let expandido = false;
 const grilla = document.getElementById('staffGrid');
 const buscador = document.getElementById('busqueda');
 const filtroEspecialidad = document.getElementById('filtroEspecialidad');
+const filtroObra = document.getElementById('filtroObraSocial');
 
 // ==================== Acceso a LocalStorage ====================
 function leerMedicos() {
   try {
-    const jsonAlmacenado = localStorage.getItem(KEY);
-    const medicos = jsonAlmacenado ? JSON.parse(jsonAlmacenado) : [];
-    return Array.isArray(medicos) ? medicos : [];
+    const json = localStorage.getItem(KEY);
+    const lista = json ? JSON.parse(json) : [];
+    return Array.isArray(lista) ? lista : [];
   } catch {
     return [];
   }
@@ -21,8 +22,18 @@ function leerMedicos() {
 
 function leerEspecialidades() {
   try {
-    const jsonEspecialidades = localStorage.getItem('especialidades');
-    const lista = jsonEspecialidades ? JSON.parse(jsonEspecialidades) : [];
+    const json = localStorage.getItem('especialidades');
+    const lista = json ? JSON.parse(json) : [];
+    return Array.isArray(lista) ? lista : [];
+  } catch {
+    return [];
+  }
+}
+
+function leerObrasSociales() {
+  try {
+    const json = localStorage.getItem('obrasSociales');
+    const lista = json ? JSON.parse(json) : [];
     return Array.isArray(lista) ? lista : [];
   } catch {
     return [];
@@ -30,15 +41,20 @@ function leerEspecialidades() {
 }
 
 // ==================== Búsqueda/filtrado ====================
+// Solo por nombre. Los selects filtran por especialidad y obra social.
 function filtrar() {
   const texto = (buscador?.value || '').trim().toLowerCase();
   const esp = filtroEspecialidad?.value || '';
+  const obra = filtroObra?.value || '';
+
   return leerMedicos().filter(medico => {
     const nombre = (medico.apellidoNombre || '').toLowerCase();
-    const especialidad = (medico.especialidad || '').toLowerCase();
-    const coincideTexto = !texto || nombre.includes(texto) || especialidad.includes(texto);
+
+    const coincideTexto = !texto || nombre.includes(texto);
     const coincideEsp = !esp || medico.especialidad === esp;
-    return coincideTexto && coincideEsp;
+    const coincideObra = !obra || (Array.isArray(medico.obrasSociales) && medico.obrasSociales.includes(obra));
+
+    return coincideTexto && coincideEsp && coincideObra;
   });
 }
 
@@ -116,7 +132,7 @@ function actualizarListado() {
   botonVerMas(medicos.length > LIMITE, expandido);
 }
 
-// ==================== Select de especialidades ====================
+// ==================== Carga de selects ====================
 function cargarEspecialidades() {
   if (!filtroEspecialidad) return;
   filtroEspecialidad.innerHTML = '<option value="">Todas las especialidades</option>';
@@ -130,11 +146,27 @@ function cargarEspecialidades() {
   });
 }
 
+function cargarObrasSociales() {
+  if (!filtroObra) return;
+  filtroObra.innerHTML = '<option value="">Todas las obras sociales</option>';
+  leerObrasSociales().forEach(o => {
+    const nombre = typeof o === 'string' ? o : (o?.nombre || '');
+    if (!nombre) return;
+    const opcion = document.createElement('option');
+    opcion.value = nombre;
+    opcion.textContent = nombre;
+    filtroObra.appendChild(opcion);
+  });
+}
+
 // ==================== Inicialización ====================
 document.addEventListener('DOMContentLoaded', () => {
   cargarEspecialidades();
+  cargarObrasSociales();
   expandido = false;
   actualizarListado();
+
   buscador?.addEventListener('input', () => { expandido = false; actualizarListado(); });
   filtroEspecialidad?.addEventListener('change', () => { expandido = false; actualizarListado(); });
+  filtroObra?.addEventListener('change', () => { expandido = false; actualizarListado(); });
 });

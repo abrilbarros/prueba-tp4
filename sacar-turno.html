@@ -72,8 +72,6 @@
                         </li>
                     </ul>
                 </li>
-                <!-- Dejar visible o quitar el acceso al admin -->
-                <!-- <li class="nav-item"><a class="nav-link text-primary" href="admin-medicos.html">Admin</a></li> -->
             </ul>
         </div>
     </nav>
@@ -90,7 +88,6 @@
                 <li class="nav-item"><a class="nav-link text-primary" href="institucional.html">Institucional</a></li>
                 <li class="nav-item"><a class="nav-link text-primary" href="contacto.html">Contacto</a></li>
                 <li class="nav-item"><a class="nav-link text-primary" href="faq.html">FAQ</a></li>
-                <!-- <li class="nav-item"><a class="nav-link text-primary" href="admin-medicos.html">Admin</a></li> -->
             </ul>
         </div>
     </div>
@@ -158,10 +155,25 @@
             <button id="btnConfirmar" class="btn btn-success">Confirmar turno</button>
         </div>
 
+        <!-- Agenda del médico (vista texto) -->
+        <section class="mt-3">
+            <h2 class="h6 mb-2">Agenda del médico</h2>
+            <div id="agendaTexto" class="small text-body-secondary"></div>
+        </section>
+
         <!-- Mis turnos -->
-        <section id="misTurnos" class="mt-4 d-none">
+        <section id="misTurnos" class="mt-4">
             <h2 class="h5">Mis turnos</h2>
-            <div class="table-responsive">
+
+            <!-- Aviso cuando no hay login -->
+            <div id="avisoLogin" class="alert alert-warning d-none">
+                ¿Tenés una cuenta? <a href="index.html#login" class="alert-link">Iniciá sesión</a> para ver tus turnos.
+                Si no tenés, <a href="contacto.html" class="alert-link">contactate con nosotros</a> para activar tu
+                cuenta.
+            </div>
+
+            <!-- Tabla solo para usuaria logueada -->
+            <div id="wrapTablaMisTurnos" class="table-responsive">
                 <table class="table table-striped align-middle">
                     <thead>
                         <tr>
