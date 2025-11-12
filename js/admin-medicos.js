@@ -197,6 +197,20 @@ let especialidadInput, obraSocialInput, valorConsultaInput, descripcionInput;
 let btnGuardarMedico, btnCancelarEdicion, tituloFormulario;
 let fotoMedicoInput;
 
+// ==================== DATOS DE ESPECIALIDADES ====================
+
+const especialidadesDelStorage = JSON.parse(localStorage.getItem("especialidades")) || [];
+
+const especialidadesDisponibles = especialidadesDelStorage.length > 0 ? especialidadesDelStorage : [
+    { id: 1, nombre: "Clínica Médica" },
+    { id: 2, nombre: "Pediatría" },
+    { id: 3, nombre: "Cirugía General" },
+    { id: 4, nombre: "Cardiología" },
+    { id: 5, nombre: "Dermatologia" },
+    { id: 6, nombre: "Traumatologia" },
+    { id: 7, nombre: "Ginecología y Obstetricia" },
+    { id: 8, nombre: "Neurología" }
+];
 
 // ==================== DATOS DE OBRAS SOCIALES ====================
 
@@ -231,6 +245,13 @@ document.addEventListener("DOMContentLoaded", () => {
     btnCancelarEdicion = document.getElementById("btnCancelarEdicion");
     tituloFormulario = document.getElementById("tituloFormulario");
 
+    especialidadesDisponibles.forEach(esp => {
+        const option = document.createElement("option");
+        option.value = esp.nombre;
+        option.textContent = esp.nombre;
+        especialidadInput.appendChild(option);
+    })
+
 
     const obraSocialContainer = document.getElementById("obraSocialContainer");
 
@@ -252,6 +273,8 @@ document.addEventListener("DOMContentLoaded", () => {
         div.appendChild(input);
         div.appendChild(label);
         obraSocialContainer.appendChild(div);
+
+
     });
 
 
