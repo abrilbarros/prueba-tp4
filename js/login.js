@@ -18,7 +18,7 @@ async function loginUsuario(username, password) {
 
         mensaje.className = "alert alert-success text-center"
             mensaje.role = "alert"
-            mensaje.textContent = "BIENVENIDO"
+            mensaje.textContent = "Bienvenido ✅"
 
         const data = await response.json();
         sessionStorage.setItem("usuarioLogueado", data.accessToken);
