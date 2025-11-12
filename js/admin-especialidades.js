@@ -1,3 +1,6 @@
+import { restringir } from "./herramientas.js";
+restringir();
+
 // ===== helpers locales =====
 function leerEspecialidades() {
     try { return JSON.parse(localStorage.getItem("especialidades")) || []; }
