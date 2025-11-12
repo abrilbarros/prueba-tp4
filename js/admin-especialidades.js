@@ -1,5 +1,3 @@
-import { restringir } from "./herramientas.js";
-restringir();
 // ===== helpers locales =====
 function leerEspecialidades() {
     try { return JSON.parse(localStorage.getItem("especialidades")) || []; }
@@ -24,8 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
             tr.innerHTML = `
         <td>${e.nombre}</td>
         <td class="text-end">
-            <button class="btn btn-warning btn-sm me-1" data-accion="editar" data-index="${i}">Editar</button>
-            <button class="btn btn-danger btn-sm" data-accion="eliminar" data-index="${i}">Eliminar</button>
+          <button class="btn btn-warning btn-sm me-1" data-accion="editar" data-index="${i}">Editar</button>
+          <button class="btn btn-danger btn-sm" data-accion="eliminar" data-index="${i}">Eliminar</button>
         </td>`;
             cuerpo.appendChild(tr);
         });
@@ -41,9 +39,19 @@ document.addEventListener("DOMContentLoaded", () => {
         const lista = leerEspecialidades();
         
         if (editandoIndex !== null) {
+            const existe = lista.findIndex((x, i) => i !== editandoIndex && (x.nombre || "").toLowerCase() === nombre.toLowerCase());
+            if (existe >= 0) {
+                alert("Ya existe una especialidad con ese nombre.");
+                return;
+            }
             lista[editandoIndex].nombre = nombre;
             editandoIndex = null;
         } else {
+            const existe = lista.findIndex(x => (x.nombre || "").toLowerCase() === nombre.toLowerCase());
+            if (existe >= 0) {
+                alert("Ya existe una especialidad con ese nombre.");
+                return;
+            }
             const ids = lista.map(x => x.id).filter(n => typeof n === "number" && !isNaN(n));
             const nuevoId = ids.length ? Math.max(...ids) + 1 : 1;
             lista.push({ id: nuevoId, nombre });
