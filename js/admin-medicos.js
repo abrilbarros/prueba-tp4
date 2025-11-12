@@ -45,7 +45,7 @@ async function guardarMedico() {
     const apellido = apellidoInput.value.trim();
     const matricula = matriculaInput.value.trim();
     const especialidad = especialidadInput.value.trim();
-    const obraSocial = Array.from(document.querySelectorAll("#obraSocialContainer input[type=checkbox]:checked")).map(cb => cb.value);
+    const obraSocial = Array.from(document.querySelectorAll("#obraSocialContainer .badge.bg-success")).map(badge => badge.dataset.obraSocial);
     const valorConsulta = parseInt(valorConsultaInput.value, 10);
     const descripcion = descripcionInput.value.trim();
 
@@ -147,9 +147,19 @@ function editarMedico(id) {
     matriculaInput.value = medico.matricula;
     especialidadInput.value = medico.especialidad;
 
-    document.querySelectorAll("#obraSocialContainer input[type=checkbox]").forEach(cbox => {
-        cbox.checked = medico.obrasSociales?.includes(cbox.value) || false;
-    });
+document.querySelectorAll("#obraSocialContainer .badge").forEach(badge => {
+    const nombreOS = badge.dataset.obraSocial;
+    
+    if (medico.obrasSociales?.includes(nombreOS)) {
+        badge.classList.remove("bg-secondary");
+        badge.classList.add("bg-success");
+    } 
+
+    else {
+        badge.classList.remove("bg-success");
+        badge.classList.add("bg-secondary");
+    }
+});
 
     valorConsultaInput.value = medico.honorarios;
     descripcionInput.value = medico.bio;
@@ -170,6 +180,11 @@ function limpiarFormulario() {
     tituloFormulario.textContent = "Agregar Nuevo Médico";
     btnGuardarMedico.textContent = "Guardar Médico";
     btnCancelarEdicion.style.display = "none";
+
+    document.querySelectorAll("#obraSocialContainer .badge").forEach(badge => {
+        badge.classList.remove("bg-success");
+        badge.classList.add("bg-secondary");
+    });
 }
 
 function cargarMedicos() {
@@ -244,25 +259,40 @@ document.addEventListener("DOMContentLoaded", () => {
     const obraSocialContainer = document.getElementById("obraSocialContainer");
 
     obrasSocialesDisponibles.forEach(os => {
-        const div = document.createElement("div");
-        div.classList.add("form-check");
 
-        const input = document.createElement("input");
-        input.type = "checkbox";
-        input.classList.add("form-check-input");
-        input.id = `obraSocial-${os.id}`;
-        input.value = os.nombre;
+    const badge = document.createElement("span");
+    
+    badge.classList.add("badge", "bg-secondary", "cursor-pointer", "user-select-none");
+    
+    badge.textContent = os.nombre;
 
-        const label = document.createElement("label");
-        label.classList.add("form-check-label");
-        label.htmlFor = input.id;
-        label.textContent = os.nombre;
+    badge.dataset.obraSocial = os.nombre;
+    
+    badge.style.cursor = "pointer";
+    badge.style.transition = "all 0.3s ease";
+    badge.style.fontSize = "1rem";
+    badge.style.fontWeight = "500";
 
-        div.appendChild(input);
-        div.appendChild(label);
-        obraSocialContainer.appendChild(div);
+    badge.addEventListener("click", () => {
 
+        badge.style.transform = "scale(0.95)";
+    setTimeout(() => {
+        badge.style.transform = "scale(1)";
+    }, 100);
+
+        if (badge.classList.contains("bg-success")) {
+            badge.classList.remove("bg-success");
+            badge.classList.add("bg-secondary");
+        } 
+        
+        else {
+            badge.classList.remove("bg-secondary");
+            badge.classList.add("bg-success");
+        }
     });
+    
+    obraSocialContainer.appendChild(badge);
+});
 
 
     formMedico.addEventListener("submit", (e) => {
