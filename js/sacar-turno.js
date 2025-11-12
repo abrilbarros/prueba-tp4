@@ -1,6 +1,6 @@
 // ===== Helpers de almacenamiento =====
-function leerUsuarioLogueado(){
-    try { return JSON.parse(sessionStorage.getItem("usuario")) || null;} catch { return [];}
+function leerUsuarioLogueado() {
+    try { return JSON.parse(sessionStorage.getItem("usuario")) || null; } catch { return []; }
 }
 function leerEspecialidades() {
     try { return JSON.parse(localStorage.getItem("especialidades")) || []; } catch { return []; }
@@ -36,7 +36,7 @@ function obtenerHorasDisponibles(medicoId, fecha) {
 }
 function estaOcupado(medicoId, fecha, hora) {
     return leerTurnos().some(
-        t => Number(t.medicoId) === Number(medicoId) && t.fecha === fecha && t.hora === hora && t.estado !== "cancelada"
+        t => Number(t.medicoId) === Number(medicoId) && t.fecha === fecha && t.hora === hora && t.estado !== "cancelado"
     );
 }
 function calcularCopago(precioBase, porcentajeCobertura) {
@@ -45,30 +45,36 @@ function calcularCopago(precioBase, porcentajeCobertura) {
     return { coberturaAplicada: cobertura, montoFinalPaciente: copago };
 }
 
+// Alterna aviso y tabla según login, y setea nombre y apellido
 function logueado() {
     const usuario = leerUsuarioLogueado();
     const inputNombre = document.getElementById("nombre");
     const inputApellido = document.getElementById("apellido");
-    const misTurnos = document.getElementById("misTurnos")
+    const avisoLogin = document.getElementById("avisoLogin");
+    const wrapTabla = document.getElementById("wrapTablaMisTurnos");
 
     if (usuario && usuario.nombre && usuario.apellido) {
         inputNombre.value = usuario.nombre;
         inputApellido.value = usuario.apellido;
         inputNombre.setAttribute("readonly", true);
         inputApellido.setAttribute("readonly", true);
-        misTurnos.classList.remove("d-none");
+
+        avisoLogin?.classList.add("d-none");
+        wrapTabla?.classList.remove("d-none");
     } else {
         inputNombre.value = "";
         inputApellido.value = "";
         inputNombre.removeAttribute("readonly");
         inputApellido.removeAttribute("readonly");
-        misTurnos.classList.add("d-none");
+
+        avisoLogin?.classList.remove("d-none");
+        wrapTabla?.classList.add("d-none");
     }
 }
 
-
 document.addEventListener("DOMContentLoaded", () => {
-    logueado()
+    logueado();
+
     // ===== Referencias =====
     const selEspecialidad = document.getElementById("selectEspecialidad");
     const selMed = document.getElementById("selectMedico");
@@ -87,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const resMon = document.getElementById("resumenMonto");
     const btnConfirmar = document.getElementById("btnConfirmar");
 
-    // Mis turnos (tabla del usuario simulado)
+    // Mis turnos
     const tbodyTablaMisTurnos = document.getElementById("tablaMisTurnos");
 
     // Estado temporal de selección
@@ -121,7 +127,6 @@ document.addEventListener("DOMContentLoaded", () => {
             opt.textContent = m.apellidoNombre || `Médico ${m.id}`;
             selMed.appendChild(opt);
         });
-
         // Reset dependientes
         selObra.innerHTML = "";
         infoDesc.textContent = "";
@@ -161,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const horasOcupadas = leerTurnos()
-            .filter(t => Number(t.medicoId) === Number(medicoId) && t.fecha === fecha && t.estado !== "cancelada")
+            .filter(t => Number(t.medicoId) === Number(medicoId) && t.fecha === fecha && t.estado !== "cancelado")
             .map(t => t.hora);
 
         horasDisponibles.forEach(hhmm => {
@@ -207,6 +212,44 @@ document.addEventListener("DOMContentLoaded", () => {
         resCont.style.display = "block";
     }
 
+    // ===== Agenda del médico (texto) =====
+    function renderAgendaDelMedico(medicoId) {
+        const cont = document.getElementById("agendaTexto");
+        if (!cont) return;
+
+        if (!medicoId) {
+            cont.innerHTML = `<em>Elegí un médico para ver su agenda.</em>`;
+            return;
+        }
+
+        const agenda = leerAgenda()
+            .filter(a => Number(a.medicoId) === Number(medicoId))
+            .sort((a, b) => a.fecha.localeCompare(b.fecha));
+
+        if (!agenda.length) {
+            cont.innerHTML = `<em>Este médico aún no publicó agenda.</em>`;
+            return;
+        }
+
+        const turnos = leerTurnos()
+            .filter(t => Number(t.medicoId) === Number(medicoId) && t.estado !== "cancelado");
+
+        let html = `<ul class="list-unstyled mb-0">`;
+        agenda.forEach(a => {
+            const ocupadas = new Set(turnos.filter(t => t.fecha === a.fecha).map(t => t.hora));
+            const disponibles = (a.horas || []).filter(h => !ocupadas.has(h));
+
+            const horasTxt = disponibles.length
+                ? disponibles.join(", ")
+                : `<span class="text-danger">Sin cupo</span>`;
+
+            html += `<li class="mb-1"><strong>${a.fecha}:</strong> ${horasTxt}</li>`;
+        });
+        html += `</ul>`;
+
+        cont.innerHTML = html;
+    }
+
     // ===== Confirmación de turno =====
     btnConfirmar?.addEventListener("click", () => {
         const { medicoId, fecha, hora } = seleccion;
@@ -215,8 +258,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const turnos = leerTurnos();
         const medico = buscarMedicoPorId(medicoId);
-        const inputNombre = document.getElementById("nombre")
-        const inputApellido = document.getElementById("apellido")
+        const inputNombre = document.getElementById("nombre");
+        const inputApellido = document.getElementById("apellido");
 
         const nuevo = {
             id: (turnos.map(t => t.id).filter(n => typeof n === "number" && !isNaN(n)).sort((a, b) => b - a)[0] || 0) + 1,
@@ -234,9 +277,10 @@ document.addEventListener("DOMContentLoaded", () => {
         guardarTurnos(turnos);
 
         alert("Turno reservado con éxito.");
-        renderHoras();       // refresca disponibilidad
+        renderHoras(); // refresca disponibilidad
         resCont.style.display = "none";
-        renderMisTurnos();   // actualiza la tabla del usuario
+        renderMisTurnos(); // actualiza la tabla del usuario
+        renderAgendaDelMedico(selMed.value);
     });
 
     // ===== "Mis turnos" (Avery Perez) =====
@@ -245,60 +289,82 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const usuario = leerUsuarioLogueado();
         const turnos = usuario
-            ?leerTurnos().filter(t => t.nombre === usuario.nombre && t.apellido === usuario.apellido && t.estado !== "cancelado")
-            :[]
+            ? leerTurnos().filter(t => t.nombre === usuario.nombre && t.apellido === usuario.apellido)
+            : [];
+
         const medicos = leerMedicos();
 
-        if(usuario){
-            tbodyTablaMisTurnos.innerHTML = turnos.length
-                ? ""
-                : `<tr><td colspan="6" class="text-center">No tenés turnos reservados.</td></tr>`;
-        }
+        turnos.sort((a, b) => (b.fecha + (b.hora || "")).localeCompare(a.fecha + (a.hora || "")));
+
+        tbodyTablaMisTurnos.innerHTML = turnos.length
+            ? ""
+            : `<tr><td colspan="7" class="text-center">No tenés turnos reservados.</td></tr>`;
 
         turnos.forEach(t => {
             const med = medicos.find(m => Number(m.id) === Number(t.medicoId));
             const nombreMed = med?.apellidoNombre || `Médico ${t.medicoId}`;
+
             const monto = typeof t.precioFinal === "number"
                 ? `$ ${t.precioFinal.toLocaleString("es-AR")}`
                 : "-";
-            const btnTurno = t.estado === "cancelada"
-                ? ""
-                : `<button class="btn btn-sm btn-outline-danger" data-cancelar="${t.id}">Cancelar</button>`;
+
+            const estado = (t.estado || "pendiente").toLowerCase();
+            const puedeCancelar = !["cancelado", "atendido"].includes(estado);
+
+            const obraTexto = (t.obraSocialNombre && t.obraSocialNombre.trim()) ? t.obraSocialNombre : "-";
+
             const tr = document.createElement("tr");
             tr.innerHTML = `
-        <td>${t.fecha}</td>
-        <td>${t.hora}</td>
+        <td>${t.fecha || "-"}</td>
+        <td>${t.hora || "-"}</td>
         <td>${nombreMed}</td>
-        <td>${t.obraSocialNombre || "Particular"}</td>
+        <td>${obraTexto}</td>
         <td>${monto}</td>
-        <td>${t.estado}</td>
+        <td>${estado}</td>
         <td class="text-end">
-          ${btnTurno}
-        </td>`;
+          ${puedeCancelar ? `<button class="btn btn-sm btn-outline-danger" data-cancelar="${t.id}">Cancelar</button>` : ""}
+        </td>
+      `;
             tbodyTablaMisTurnos.appendChild(tr);
         });
     }
 
     // Delegación para cancelar turnos del usuario
     tbodyTablaMisTurnos?.addEventListener("click", (e) => {
-        const usuario = leerUsuarioLogueado()
+        const usuario = leerUsuarioLogueado();
         const btn = e.target.closest("button[data-cancelar]");
         if (!btn) return;
+
         const id = Number(btn.dataset.cancelar);
         const turnos = leerTurnos();
-        const i = turnos.findIndex(t => Number(t.id) === id && t.nombre === usuario.nombre && t.apellido === usuario.apellido);
+
+        const i = turnos.findIndex(t =>
+            Number(t.id) === id &&
+            t.nombre === usuario?.nombre &&
+            t.apellido === usuario?.apellido
+        );
         if (i < 0) return;
 
+        const estadoActual = (turnos[i].estado || "pendiente");
+        if (["cancelado", "atendido"].includes(estadoActual)) return;
+
         if (!confirm("¿Querés cancelar este turno?")) return;
-        turnos[i].estado = "cancelada";
+
+        turnos[i].estado = "cancelado";
         guardarTurnos(turnos);
+
         renderMisTurnos();
         renderHoras();
+        renderAgendaDelMedico(selMed.value);
     });
 
     // ===== Listeners e inicialización =====
     selEspecialidad?.addEventListener("change", cargarMedicos);
-    selMed.addEventListener("change", () => { cargarObrasDelMedico(selMed.value); renderHoras(); });
+    selMed.addEventListener("change", () => {
+        cargarObrasDelMedico(selMed.value);
+        renderHoras();
+        renderAgendaDelMedico(selMed.value);
+    });
     selObra.addEventListener("change", () => {
         const obra = selObra.value ? buscarObraPorNombre(selObra.value) : null;
         infoDesc.textContent = obra ? `Cobertura disponible: ${obra.porcentajeCobertura}%` : "";
@@ -308,5 +374,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     cargarEspecialidades();
     cargarMedicos();
+    renderAgendaDelMedico(selMed.value);
     renderMisTurnos();
 });
