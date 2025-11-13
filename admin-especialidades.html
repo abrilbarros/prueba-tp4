@@ -11,8 +11,9 @@
     <link rel="stylesheet" href="css/styles.css" />
 </head>
 
-<body class="d-flex flex-column min-vh-100">
-    <div id="contenido" class="d-none">
+<body>
+    <!-- Contenedor principal -->
+    <div id="contenido" class="d-flex flex-column min-vh-100 d-none">
         <!-- Topbar -->
         <header class="navbar bg-white border-bottom sticky-top">
             <div class="container-fluid">
@@ -66,85 +67,79 @@
             </div>
         </div>
 
-        <!-- Wrapper -->
-        <div class="flex-grow-1">
-            <div class="container-fluid">
-                <div class="row">
-                    <!-- Sidebar desktop -->
-                    <nav class="col-12 col-md-3 col-lg-2 d-none d-md-block bg-white border-end p-0">
-                        <div class="sidebar-sticky">
-                            <div class="sidebar-scroll px-3 pt-3">
-                                <h6 id="tituloPanel" class="text-uppercase text-body-secondary mb-3">
-                                    Panel
-                                </h6>
-                                <ul class="nav nav-pills flex-column gap-1" aria-labelledby="tituloPanel">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="admin-medicos.html">
-                                            <i class="bi bi-person-vcard me-2"></i>Médicos
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link active" href="admin-especialidades.html">
-                                            <i class="bi bi-hospital me-2"></i>Especialidades
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="admin-obras-sociales.html">
-                                            <i class="bi bi-shield-plus me-2"></i>Obras sociales
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="admin-turnos.html">
-                                            <i class="bi bi-calendar-check me-2"></i>Turnos y reservas
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="usuarios.html">
-                                            <i class="bi bi-people me-2"></i>Usuarios
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="index.html">
-                                            <i class="bi bi-box-arrow-up-right me-2"></i>Ver sitio
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+        <!-- Contenedor flex -->
+        <div class="container-fluid p-0 d-flex flex-column flex-grow-1">
+            <div class="row g-0 flex-grow-1">
+                <!-- Sidebar desktop -->
+                <nav class="col-12 col-md-3 col-lg-2 d-none d-md-flex flex-column bg-white border-end">
+                    <div class="px-3 pt-3">
+                        <h6 id="tituloPanel" class="text-uppercase text-body-secondary mb-3">PANEL</h6>
+                        <ul class="nav nav-pills flex-column gap-1" aria-labelledby="tituloPanel">
+                            <li class="nav-item">
+                                <a class="nav-link" href="admin-medicos.html">
+                                    <i class="bi bi-person-vcard me-2"></i>Médicos
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="admin-especialidades.html">
+                                    <i class="bi bi-hospital me-2"></i>Especialidades
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="admin-obras-sociales.html">
+                                    <i class="bi bi-shield-plus me-2"></i>Obras sociales
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="admin-turnos.html">
+                                    <i class="bi bi-calendar-check me-2"></i>Turnos y reservas
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="usuarios.html">
+                                    <i class="bi bi-people me-2"></i>Usuarios
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="index.html">
+                                    <i class="bi bi-box-arrow-up-right me-2"></i>Ver sitio
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+
+                <!-- Contenido -->
+                <main class="col-12 col-md-9 col-lg-10 p-3">
+                    <h1 class="h3">Especialidades</h1>
+
+                    <form id="formEspecialidad" class="row g-3">
+                        <div class="col-md-8">
+                            <label class="form-label" for="especialidadNombre">Nombre</label>
+                            <input id="especialidadNombre" class="form-control" placeholder="Ej.: Cardiología"
+                                required />
                         </div>
-                    </nav>
-
-                    <!-- Contenido -->
-                    <main class="col-12 col-md-9 col-lg-10 p-3">
-                        <h1 class="h3">Especialidades</h1>
-
-                        <form id="formEspecialidad" class="row g-3">
-                            <div class="col-md-8">
-                                <label class="form-label" for="especialidadNombre">Nombre</label>
-                                <input id="especialidadNombre" class="form-control" placeholder="Ej.: Cardiología"
-                                    required />
-                            </div>
-                            <div class="col-12 text-end">
-                                <button class="btn btn-success">Guardar</button>
-                            </div>
-                        </form>
-
-                        <div class="table-responsive mt-3">
-                            <table class="table table-striped align-middle">
-                                <thead>
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th class="text-end">Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tablaEspecialidades"></tbody>
-                            </table>
+                        <div class="col-12 text-end">
+                            <button class="btn btn-success">Guardar</button>
                         </div>
-                    </main>
-                </div>
+                    </form>
+
+                    <div class="table-responsive mt-3">
+                        <table class="table table-striped align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th class="text-end">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaEspecialidades"></tbody>
+                        </table>
+                    </div>
+                </main>
             </div>
         </div>
 
-        <!-- Footer-->
+        <!-- Footer -->
         <footer class="mt-auto border-top py-3 text-center text-body-tertiary small">
             <div class="container-fluid">
                 v1.0 · Proyecto académico (entrega final)
